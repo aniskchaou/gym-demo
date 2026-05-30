@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GymFlow — Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            indigo: { 50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    [data-page] { display: none; }
+    [data-page].active { display: block; }
+    [data-page="dashboard"].active { display: flex; }
+    .sidebar-link.active { background: rgba(99,102,241,0.2); color: #a5b4fc; }
+    .sidebar-link.active svg { color: #818cf8; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+    .animate-pulse { animation: pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+    .demo-badge { position:fixed; bottom:1rem; right:1rem; background:#6366f1; color:#fff; padding:.4rem 1rem; border-radius:9999px; font-size:.75rem; font-weight:700; z-index:9999; box-shadow:0 2px 12px rgba(99,102,241,.4); }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+
+<!-- DEMO BADGE -->
+<div class="demo-badge">🎮 DEMO MODE</div>
+
+<!-- ===== LANDING PAGE ===== -->
+<div data-page="landing" class="active">
+  <!-- Navbar -->
+  <nav class="bg-white border-b border-slate-100 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="bg-indigo-500 p-1.5 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4"/></svg>
+        </div>
+        <span class="text-lg font-bold text-slate-900">GymFlow</span>
+        <span class="ml-2 text-xs bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded-full font-semibold">Demo</span>
+      </div>
+      <div class="hidden lg:flex items-center gap-5 text-sm text-slate-600">
+        <button onclick="navigate('public','classes')" class="hover:text-indigo-500 transition-colors">Classes</button>
+        <button onclick="navigate('public','trainers')" class="hover:text-indigo-500 transition-colors">Trainers</button>
+        <button onclick="navigate('public','programs')" class="hover:text-indigo-500 transition-colors">Programs</button>
+        <button onclick="navigate('public','pricing')" class="hover:text-indigo-500 transition-colors">Pricing</button>
+        <button onclick="navigate('public','locations')" class="hover:text-indigo-500 transition-colors">Locations</button>
+        <button onclick="navigate('public','blog')" class="hover:text-indigo-500 transition-colors">Blog</button>
+        <a href="#features" class="hover:text-indigo-500 transition-colors">Features</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="navigate('login')" class="text-sm text-slate-600 hover:text-indigo-500 font-medium transition-colors">Sign in</button>
+        <button onclick="navigate('login')" class="bg-indigo-500 hover:bg-indigo-600 text-white text-sm px-4 py-2 rounded-xl font-semibold transition-colors">Free trial</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pt-20 pb-20 px-6 bg-gradient-to-b from-slate-50 to-white">
+    <div class="max-w-5xl mx-auto text-center">
+      <span class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-600 text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
+        ✨ Now offering a 7-day free trial — no card needed
+      </span>
+      <h1 class="text-5xl sm:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
+        Train smarter.<br><span class="text-indigo-500">Live stronger.</span>
+      </h1>
+      <p class="text-xl text-slate-500 mb-10 max-w-2xl mx-auto">
+        Join 12,000+ members across our European network. Classes, trainers, nutrition and a mobile app — all in one membership.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button onclick="navigate('login')" class="bg-indigo-500 hover:bg-indigo-600 text-white px-8 py-3.5 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2">
+          Start free trial →
+        </button>
+        <a href="#pricing" class="border border-slate-200 hover:border-slate-400 text-slate-700 px-8 py-3.5 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2">
+          View plans
+        </a>
+      </div>
+      <p class="text-xs text-slate-400 mt-4">Cancel anytime · 15 locations · 12,000+ members</p>
+    </div>
+    <!-- Stats -->
+    <div class="max-w-4xl mx-auto mt-14 grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="text-center p-5 rounded-2xl bg-white border border-slate-100 shadow-sm"><p class="text-3xl font-extrabold text-indigo-600">12k+</p><p class="text-xs text-slate-500 mt-1">Active members</p></div>
+      <div class="text-center p-5 rounded-2xl bg-white border border-slate-100 shadow-sm"><p class="text-3xl font-extrabold text-indigo-600">45+</p><p class="text-xs text-slate-500 mt-1">Weekly classes</p></div>
+      <div class="text-center p-5 rounded-2xl bg-white border border-slate-100 shadow-sm"><p class="text-3xl font-extrabold text-indigo-600">120+</p><p class="text-xs text-slate-500 mt-1">Certified trainers</p></div>
+      <div class="text-center p-5 rounded-2xl bg-white border border-slate-100 shadow-sm"><p class="text-3xl font-extrabold text-indigo-600">15</p><p class="text-xs text-slate-500 mt-1">Locations</p></div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl font-bold text-slate-900 mb-3">Everything for your fitness journey</h2>
+        <p class="text-slate-500 max-w-xl mx-auto">From day one to your hundredth class — we cover every step.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="p-6 rounded-2xl border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"><div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center mb-4 text-indigo-500 text-lg">👥</div><h3 class="font-semibold text-slate-800 mb-1.5">Member Management</h3><p class="text-sm text-slate-500 leading-relaxed">Onboard members, track profiles, memberships and attendance history in one place.</p></div>
+        <div class="p-6 rounded-2xl border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"><div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center mb-4 text-indigo-500 text-lg">📅</div><h3 class="font-semibold text-slate-800 mb-1.5">Class Scheduling</h3><p class="text-sm text-slate-500 leading-relaxed">Create classes, manage schedules and let members book spots online 24/7.</p></div>
+        <div class="p-6 rounded-2xl border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"><div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center mb-4 text-indigo-500 text-lg">💳</div><h3 class="font-semibold text-slate-800 mb-1.5">Payments & Billing</h3><p class="text-sm text-slate-500 leading-relaxed">Automated invoicing, Stripe integration and real-time revenue tracking.</p></div>
+        <div class="p-6 rounded-2xl border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"><div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center mb-4 text-indigo-500 text-lg">📊</div><h3 class="font-semibold text-slate-800 mb-1.5">Analytics & Reports</h3><p class="text-sm text-slate-500 leading-relaxed">KPI dashboards, churn analysis and revenue charts to grow your business.</p></div>
+        <div class="p-6 rounded-2xl border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"><div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center mb-4 text-indigo-500 text-lg">⚡</div><h3 class="font-semibold text-slate-800 mb-1.5">Check-In System</h3><p class="text-sm text-slate-500 leading-relaxed">QR code and RFID check-in, live occupancy tracking and daily reports.</p></div>
+        <div class="p-6 rounded-2xl border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all"><div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center mb-4 text-indigo-500 text-lg">🏢</div><h3 class="font-semibold text-slate-800 mb-1.5">Multi-Branch</h3><p class="text-sm text-slate-500 leading-relaxed">Manage multiple locations from a single account with role-based access.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="py-20 px-6 bg-slate-50">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl font-bold text-slate-900 mb-3">Pick your plan</h2>
+        <p class="text-slate-500">No contracts. Cancel anytime.</p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-6">
+        <div class="relative rounded-2xl p-6 border border-slate-200 bg-white">
+          <h3 class="font-bold text-lg text-slate-900">Basic</h3><p class="text-slate-500 text-sm mt-1">Just the essentials</p>
+          <div class="mt-4 mb-6"><span class="text-4xl font-extrabold text-slate-900">$29</span><span class="text-slate-500 text-sm">/mo</span></div>
+          <ul class="space-y-2.5 mb-6 text-sm text-slate-600">
+            <li class="flex items-center gap-2">✅ Open gym access</li><li class="flex items-center gap-2">✅ Locker room</li><li class="flex items-center gap-2">✅ Free Wi-Fi</li><li class="flex items-center gap-2">✅ Mobile app</li>
+          </ul>
+          <button onclick="navigate('login')" class="w-full block text-center py-2.5 rounded-xl text-sm font-semibold border border-slate-200 hover:border-slate-400 text-slate-700 transition-colors">Join Basic</button>
+        </div>
+        <div class="relative rounded-2xl p-6 border-2 border-indigo-400 shadow-lg shadow-indigo-100 bg-white">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-full">Most popular</span>
+          <h3 class="font-bold text-lg text-slate-900">Premium</h3><p class="text-slate-500 text-sm mt-1">Most popular</p>
+          <div class="mt-4 mb-6"><span class="text-4xl font-extrabold text-slate-900">$49</span><span class="text-slate-500 text-sm">/mo</span></div>
+          <ul class="space-y-2.5 mb-6 text-sm text-slate-600">
+            <li class="flex items-center gap-2">✅ Everything in Basic</li><li class="flex items-center gap-2">✅ Group classes</li><li class="flex items-center gap-2">✅ Trainer access</li><li class="flex items-center gap-2">✅ Nutrition plans</li><li class="flex items-center gap-2">✅ 2 guest passes/mo</li>
+          </ul>
+          <button onclick="navigate('login')" class="w-full block text-center py-2.5 rounded-xl text-sm font-semibold bg-indigo-500 hover:bg-indigo-600 text-white transition-colors">Join Premium</button>
+        </div>
+        <div class="relative rounded-2xl p-6 border border-slate-200 bg-white">
+          <h3 class="font-bold text-lg text-slate-900">Elite</h3><p class="text-slate-500 text-sm mt-1">Full experience</p>
+          <div class="mt-4 mb-6"><span class="text-4xl font-extrabold text-slate-900">$89</span><span class="text-slate-500 text-sm">/mo</span></div>
+          <ul class="space-y-2.5 mb-6 text-sm text-slate-600">
+            <li class="flex items-center gap-2">✅ Everything in Premium</li><li class="flex items-center gap-2">✅ 1-on-1 PT (4x/mo)</li><li class="flex items-center gap-2">✅ AI diet & program</li><li class="flex items-center gap-2">✅ Recovery zone</li><li class="flex items-center gap-2">✅ Unlimited guests</li>
+          </ul>
+          <button onclick="navigate('login')" class="w-full block text-center py-2.5 rounded-xl text-sm font-semibold border border-slate-200 hover:border-slate-400 text-slate-700 transition-colors">Join Elite</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="py-20 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl font-bold text-slate-900 mb-3">Transformation stories</h2>
+        <p class="text-slate-500">Real members. Real results.</p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm"><div class="flex gap-0.5 mb-3 text-yellow-400">★★★★★</div><p class="text-slate-600 text-sm leading-relaxed mb-4">"The trainers are amazing and the AI nutrition plan kept me on track. I finally feel strong."</p><p class="font-semibold text-slate-800 text-sm">Sara M.</p><p class="text-xs text-indigo-600 font-medium">Lost 14 kg in 6 months</p></div>
+        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm"><div class="flex gap-0.5 mb-3 text-yellow-400">★★★★★</div><p class="text-slate-600 text-sm leading-relaxed mb-4">"Best gym I have ever joined. The app makes booking classes effortless and the community is unreal."</p><p class="font-semibold text-slate-800 text-sm">James K.</p><p class="text-xs text-indigo-600 font-medium">Gained 8 kg muscle</p></div>
+        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm"><div class="flex gap-0.5 mb-3 text-yellow-400">★★★★★</div><p class="text-slate-600 text-sm leading-relaxed mb-4">"Booked a free trial, never left. The trainers built a program that took me from zero to marathon."</p><p class="font-semibold text-slate-800 text-sm">Lena R.</p><p class="text-xs text-indigo-600 font-medium">Marathon ready</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-20 px-6 bg-gradient-to-br from-indigo-600 to-purple-600 text-white">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-extrabold mb-4">Your first week is on us</h2>
+      <p class="text-indigo-100 mb-8 text-lg">No card. No commitment. Just walk in and train.</p>
+      <button onclick="navigate('login')" class="bg-white text-indigo-700 hover:bg-indigo-50 px-8 py-3.5 rounded-xl font-bold transition-colors inline-flex items-center gap-2">
+        Start free trial →
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 py-10 px-6 text-center text-sm">
+    <p class="text-white font-bold text-lg mb-2">GymFlow</p>
+    <p>© 2025 GymFlow. All rights reserved. · <span class="text-indigo-400">Demo version — no data is stored</span></p>
+  </footer>
+</div>
+
+
+<!-- ===== PUBLIC PAGES WRAPPER ===== -->
+<div data-page="public">
+  <nav class="bg-white/95 backdrop-blur border-b border-slate-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <button onclick="navigate('landing')" class="flex items-center gap-2.5">
+        <div class="bg-indigo-500 p-1.5 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4"/></svg>
+        </div>
+        <span class="text-lg font-bold text-slate-900">GymFlow</span>
+      </button>
+      <div class="hidden lg:flex items-center gap-5 text-sm font-medium text-slate-600">
+        <button onclick="navigate('public','pricing')" class="hover:text-slate-900 transition-colors">Pricing</button>
+        <button onclick="navigate('public','memberships')" class="hover:text-slate-900 transition-colors">Memberships</button>
+        <button onclick="navigate('public','classes')" class="hover:text-slate-900 transition-colors">Classes</button>
+        <button onclick="navigate('public','trainers')" class="hover:text-slate-900 transition-colors">Trainers</button>
+        <button onclick="navigate('public','programs')" class="hover:text-slate-900 transition-colors">Programs</button>
+        <button onclick="navigate('public','nutrition')" class="hover:text-slate-900 transition-colors">Nutrition</button>
+        <button onclick="navigate('public','events')" class="hover:text-slate-900 transition-colors">Events</button>
+        <button onclick="navigate('public','locations')" class="hover:text-slate-900 transition-colors">Locations</button>
+        <button onclick="navigate('public','blog')" class="hover:text-slate-900 transition-colors">Blog</button>
+        <button onclick="navigate('public','contact')" class="hover:text-slate-900 transition-colors">Contact</button>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="navigate('login')" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Sign in</button>
+        <button onclick="navigate('public','free-trial')" class="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">Free trial</button>
+      </div>
+    </div>
+  </nav>
+  <div id="public-content" class="min-h-screen bg-white"></div>
+  <footer class="bg-slate-900 text-slate-400 py-10 px-6 text-center text-sm">
+    <p class="text-white font-bold text-lg mb-2">GymFlow</p>
+    <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4 text-xs">
+      <button onclick="navigate('public','about')" class="hover:text-indigo-400">About</button>
+      <button onclick="navigate('public','pricing')" class="hover:text-indigo-400">Pricing</button>
+      <button onclick="navigate('public','memberships')" class="hover:text-indigo-400">Memberships</button>
+      <button onclick="navigate('public','classes')" class="hover:text-indigo-400">Classes</button>
+      <button onclick="navigate('public','trainers')" class="hover:text-indigo-400">Trainers</button>
+      <button onclick="navigate('public','programs')" class="hover:text-indigo-400">Programs</button>
+      <button onclick="navigate('public','locations')" class="hover:text-indigo-400">Locations</button>
+      <button onclick="navigate('public','faq')" class="hover:text-indigo-400">FAQ</button>
+      <button onclick="navigate('public','blog')" class="hover:text-indigo-400">Blog</button>
+      <button onclick="navigate('public','contact')" class="hover:text-indigo-400">Contact</button>
+    </div>
+    <p>© 2025 GymFlow. All rights reserved. · <span class="text-indigo-400">Demo version — no data is stored</span></p>
+  </footer>
+</div>
+
+
+<!-- ===== LOGIN PAGE ===== -->
+<div data-page="login">
+  <div class="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+      <div class="flex items-center justify-center gap-2 mb-8">
+        <div class="bg-indigo-500 p-2 rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4"/></svg>
+        </div>
+        <span class="text-2xl font-bold text-white">GymFlow</span>
+      </div>
+      <div class="bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-700">
+        <h2 class="text-2xl font-bold text-white mb-1">Sign in</h2>
+        <p class="text-slate-400 text-sm mb-6">Choose a demo role to explore the dashboard</p>
+
+        <!-- Demo role buttons -->
+        <div class="mb-6">
+          <p class="text-xs text-slate-400 font-medium mb-3 uppercase tracking-wider">Quick Demo Login</p>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="demoLogin('owner')" class="bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/40 text-indigo-300 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left">
+              <span class="block text-xs text-indigo-400 mb-0.5">Owner</span>admin@gymflow.com
+            </button>
+            <button onclick="demoLogin('trainer')" class="bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/40 text-blue-300 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left">
+              <span class="block text-xs text-blue-400 mb-0.5">Trainer</span>trainer@gymflow.com
+            </button>
+            <button onclick="demoLogin('member')" class="bg-green-500/20 hover:bg-green-500/30 border border-green-500/40 text-green-300 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left">
+              <span class="block text-xs text-green-400 mb-0.5">Member</span>member@gymflow.com
+            </button>
+            <button onclick="demoLogin('reception')" class="bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/40 text-orange-300 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors text-left">
+              <span class="block text-xs text-orange-400 mb-0.5">Receptionist</span>reception@gymflow.com
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 mb-6"><div class="flex-1 h-px bg-slate-700"></div><span class="text-xs text-slate-500">or sign in manually</span><div class="flex-1 h-px bg-slate-700"></div></div>
+
+        <form onsubmit="handleLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-1.5">Email address</label>
+            <input id="login-email" type="email" placeholder="you@example.com" value="admin@gymflow.com"
+              class="w-full bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-1.5">Password</label>
+            <input id="login-password" type="password" placeholder="••••••••" value="demo1234"
+              class="w-full bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"/>
+          </div>
+          <div id="login-error" class="hidden text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-2.5"></div>
+          <button type="submit"
+            class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2.5 rounded-xl font-semibold text-sm transition-colors">
+            Sign in
+          </button>
+        </form>
+        <p class="text-center text-xs text-slate-500 mt-4">
+          <button onclick="navigate('landing')" class="text-indigo-400 hover:underline">← Back to home</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== DASHBOARD ===== -->
+<div data-page="dashboard" class="h-screen overflow-hidden bg-slate-100">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-slate-900 flex flex-col h-full shrink-0">
+    <div class="flex items-center gap-2.5 px-6 py-5 border-b border-slate-800">
+      <div class="bg-indigo-500 p-1.5 rounded-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4"/></svg>
+      </div>
+      <span class="text-lg font-bold text-white">GymFlow</span>
+    </div>
+    <nav id="sidebar-nav" class="flex-1 overflow-y-auto px-3 py-4 space-y-1"></nav>
+    <div class="px-3 pb-4 border-t border-slate-800 pt-3">
+      <div id="sidebar-user" class="flex items-center gap-3 px-3 py-2"></div>
+      <button onclick="navigate('landing')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-red-400 hover:bg-slate-800 transition-colors mt-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main content area -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <!-- Topbar -->
+    <div class="bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between shrink-0">
+      <h1 id="dash-title" class="text-lg font-semibold text-slate-800"></h1>
+      <div class="flex items-center gap-3">
+        <span class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded-full font-semibold">Demo Mode</span>
+        <div id="dash-avatar" class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs font-bold"></div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <main class="flex-1 overflow-y-auto p-6">
+      <!-- Sub-pages inside dashboard -->
+      <div id="sub-owner" class="sub-page"></div>
+      <div id="sub-members" class="sub-page hidden"></div>
+      <div id="sub-classes" class="sub-page hidden"></div>
+      <div id="sub-payments" class="sub-page hidden"></div>
+      <div id="sub-attendance" class="sub-page hidden"></div>
+      <div id="sub-trainers" class="sub-page hidden"></div>
+      <div id="sub-notifications" class="sub-page hidden"></div>
+      <div id="sub-member-home" class="sub-page hidden"></div>
+      <div id="sub-trainer-home" class="sub-page hidden"></div>
+      <div id="sub-branches" class="sub-page hidden"></div>
+      <div id="sub-memberships" class="sub-page hidden"></div>
+      <div id="sub-reports" class="sub-page hidden"></div>
+      <div id="sub-ai-insights" class="sub-page hidden"></div>
+      <div id="sub-programs" class="sub-page hidden"></div>
+      <div id="sub-events" class="sub-page hidden"></div>
+      <div id="sub-equipment" class="sub-page hidden"></div>
+      <div id="sub-live-classes" class="sub-page hidden"></div>
+      <div id="sub-loyalty" class="sub-page hidden"></div>
+      <div id="sub-coupons" class="sub-page hidden"></div>
+      <div id="sub-gift-cards" class="sub-page hidden"></div>
+      <div id="sub-marketing" class="sub-page hidden"></div>
+      <div id="sub-pt-sessions" class="sub-page hidden"></div>
+      <div id="sub-workouts" class="sub-page hidden"></div>
+      <div id="sub-groups" class="sub-page hidden"></div>
+      <div id="sub-access" class="sub-page hidden"></div>
+      <div id="sub-audit" class="sub-page hidden"></div>
+      <div id="sub-settings" class="sub-page hidden"></div>
+      <div id="sub-bookings" class="sub-page hidden"></div>
+      <div id="sub-my-membership" class="sub-page hidden"></div>
+      <div id="sub-ai-diet" class="sub-page hidden"></div>
+      <div id="sub-nutrition" class="sub-page hidden"></div>
+      <div id="sub-pos" class="sub-page hidden"></div>
+      <div id="sub-inventory" class="sub-page hidden"></div>
+      <div id="sub-lockers" class="sub-page hidden"></div>
+      <div id="sub-activities" class="sub-page hidden"></div>
+      <div id="sub-reception" class="sub-page hidden"></div>
+      <div id="sub-workout-plans" class="sub-page hidden"></div>
+    </main>
+  </div>
+</div>
+
+<script src="demo.js"></script>
+</body>
+</html>
