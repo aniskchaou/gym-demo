@@ -1,10 +1,11 @@
 // ==================== DEMO DATA ====================
 
 const DEMO_USERS = {
-  owner:     { firstName: 'Alex',   lastName: 'Morgan',  role: 'GYM_OWNER',    email: 'admin@gymflow.com',     password: 'demo1234' },
-  trainer:   { firstName: 'Jordan', lastName: 'Lee',     role: 'TRAINER',       email: 'trainer@gymflow.com',   password: 'demo1234' },
-  member:    { firstName: 'Sam',    lastName: 'Davis',   role: 'MEMBER',        email: 'member@gymflow.com',    password: 'demo1234' },
-  reception: { firstName: 'Casey',  lastName: 'Smith',   role: 'RECEPTIONIST',  email: 'reception@gymflow.com', password: 'demo1234' },
+  owner:     { firstName: 'Alex',   lastName: 'Morgan',  role: 'GYM_OWNER',    email: 'owner@demogym.com',      password: 'Owner@1234' },
+  trainer:   { firstName: 'Jordan', lastName: 'Lee',     role: 'TRAINER',       email: 'trainer@demogym.com',    password: 'Trainer@1234' },
+  member:    { firstName: 'Sam',    lastName: 'Davis',   role: 'MEMBER',        email: 'member@demogym.com',     password: 'Member@1234' },
+  reception: { firstName: 'Casey',  lastName: 'Smith',   role: 'RECEPTIONIST',  email: 'reception@demogym.com',  password: 'Reception@1234' },
+  superadmin:{ firstName: 'Chris',  lastName: 'Admin',   role: 'SUPER_ADMIN',   email: 'superadmin@gymflow.com', password: 'Super@1234' },
 };
 
 const DEMO_MEMBERS = [
@@ -309,7 +310,7 @@ let memberChartInst = null;
 function navigate(page, sub) {
   document.querySelectorAll('[data-page]').forEach(el => el.classList.remove('active'));
   const el = document.querySelector(`[data-page="${page}"]`);
-  if (el) el.classList.add('active');
+  if (el) { el.classList.add('active'); window.scrollTo(0, 0); }
   if (page === 'dashboard') renderDashboard();
   if (page === 'public') {
     window.scrollTo(0, 0);
@@ -341,47 +342,81 @@ function handleLogin(e) {
 
 // ==================== SIDEBAR ====================
 const NAV_ITEMS = [
-  // ── Owner / Branch Manager ────────────────────────────────────────────────
-  { label:'Dashboard',       sub:'owner',         icon:'🏠', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Members',         sub:'members',       icon:'👥', roles:['GYM_OWNER','BRANCH_MANAGER','RECEPTIONIST'] },
-  { label:'Attendance',      sub:'attendance',    icon:'✅', roles:['GYM_OWNER','BRANCH_MANAGER','RECEPTIONIST'] },
-  { label:'Classes',         sub:'classes',       icon:'📅', roles:['GYM_OWNER','BRANCH_MANAGER','RECEPTIONIST','TRAINER','MEMBER'] },
-  { label:'Trainers',        sub:'trainers',      icon:'🏋️', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Branches',        sub:'branches',      icon:'🏢', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Memberships',     sub:'memberships',   icon:'💎', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Payments',        sub:'payments',      icon:'💳', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Reports',         sub:'reports',       icon:'📊', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'AI Insights',     sub:'ai-insights',   icon:'🤖', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Programs',        sub:'programs',      icon:'🎯', roles:['GYM_OWNER','BRANCH_MANAGER','TRAINER','MEMBER'] },
-  { label:'Events',          sub:'events',        icon:'🎉', roles:['GYM_OWNER','BRANCH_MANAGER','TRAINER','MEMBER','RECEPTIONIST'] },
-  { label:'PT Sessions',     sub:'pt-sessions',   icon:'🤝', roles:['GYM_OWNER','BRANCH_MANAGER','TRAINER','MEMBER'] },
-  { label:'Workouts',        sub:'workouts',      icon:'💪', roles:['GYM_OWNER','BRANCH_MANAGER','TRAINER','MEMBER'] },
-  { label:'Live Classes',    sub:'live-classes',  icon:'📺', roles:['GYM_OWNER','BRANCH_MANAGER','TRAINER','MEMBER'] },
-  { label:'Equipment',       sub:'equipment',     icon:'⚙️', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Inventory',       sub:'inventory',     icon:'📦', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Lockers',         sub:'lockers',       icon:'🔒', roles:['GYM_OWNER','BRANCH_MANAGER','RECEPTIONIST'] },
-  { label:'Groups',          sub:'groups',        icon:'🫂', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Access Control',  sub:'access',        icon:'🔐', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Loyalty',         sub:'loyalty',       icon:'⭐', roles:['GYM_OWNER','BRANCH_MANAGER','MEMBER'] },
-  { label:'Coupons',         sub:'coupons',       icon:'🏷️', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Gift Cards',      sub:'gift-cards',    icon:'🎁', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Marketing',       sub:'marketing',     icon:'📣', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Audit Log',       sub:'audit',         icon:'📋', roles:['GYM_OWNER','BRANCH_MANAGER'] },
-  { label:'Notifications',   sub:'notifications', icon:'🔔', roles:['GYM_OWNER','BRANCH_MANAGER','RECEPTIONIST','TRAINER','MEMBER'] },
-  { label:'Settings',        sub:'settings',      icon:'⚙️', roles:['GYM_OWNER','BRANCH_MANAGER','TRAINER','MEMBER','RECEPTIONIST'] },
-  // ── Trainer ───────────────────────────────────────────────────────────────
-  { label:'Dashboard',       sub:'trainer-home',  icon:'🏠', roles:['TRAINER'] },
-  { label:'Nutrition',       sub:'nutrition',     icon:'🥑', roles:['TRAINER','MEMBER'] },
-  // ── Member ────────────────────────────────────────────────────────────────
-  { label:'Dashboard',       sub:'member-home',   icon:'🏠', roles:['MEMBER'] },
-  { label:'My Bookings',     sub:'bookings',      icon:'📆', roles:['MEMBER'] },
-  { label:'My Membership',   sub:'my-membership', icon:'💎', roles:['MEMBER'] },
-  { label:'AI Diet',         sub:'ai-diet',       icon:'🥗', roles:['MEMBER'] },
+  // ── Gym Owner / Branch Manager (mirrors sidebar.tsx exactly) ─────────────
+  { label:'Dashboard',       sub:'owner',            icon:'🏠', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'My Gyms',         sub:'my-gyms',          icon:'🏢', roles:['GYM_OWNER'] },
+  { label:'Members',         sub:'members',          icon:'👥', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Approvals',       sub:'approvals',        icon:'✔️', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Staff',           sub:'staff',            icon:'👔', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Attendance',      sub:'attendance',       icon:'✅', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Classes',         sub:'classes',          icon:'📅', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Trainers',        sub:'trainers',         icon:'🏋️', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Memberships',     sub:'memberships',      icon:'💎', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Payments',        sub:'payments',         icon:'💳', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Payroll',         sub:'payroll',          icon:'💰', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Schedule',        sub:'schedule',         icon:'🗓️', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Analytics',       sub:'reports',          icon:'📊', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Branches',        sub:'branches',         icon:'🌐', roles:['GYM_OWNER'] },
+  { label:'Equipment',       sub:'equipment',        icon:'⚙️', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Maintenance',     sub:'maintenance',      icon:'🔧', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Inventory',       sub:'inventory',        icon:'📦', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Access Control',  sub:'access',           icon:'🔐', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Complaints',      sub:'complaints',       icon:'💬', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Leads',           sub:'leads',            icon:'📈', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Policies',        sub:'policies',         icon:'🛡️', roles:['GYM_OWNER'] },
+  { label:'My Workouts',     sub:'workouts',         icon:'💪', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Notifications',   sub:'notifications',    icon:'🔔', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Settings',        sub:'settings',         icon:'⚙️', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+
   // ── Receptionist ──────────────────────────────────────────────────────────
-  { label:'Dashboard',       sub:'reception',     icon:'🏠', roles:['RECEPTIONIST'] },
-  { label:'POS',             sub:'pos',           icon:'🖥️', roles:['RECEPTIONIST'] },
-  { label:'Workout Plans',   sub:'workout-plans', icon:'📋', roles:['GYM_OWNER','BRANCH_MANAGER','TRAINER'] },
-  { label:'Activities',      sub:'activities',    icon:'🕐', roles:['GYM_OWNER','BRANCH_MANAGER'] },
+  { label:'Dashboard',        sub:'reception',        icon:'🏠', roles:['RECEPTIONIST'] },
+  { label:'Check-in',         sub:'attendance',       icon:'✅', roles:['RECEPTIONIST'] },
+  { label:'Visitors',         sub:'visitors',         icon:'🚪', roles:['RECEPTIONIST'] },
+  { label:'Register Member',  sub:'register-member',  icon:'➕', roles:['RECEPTIONIST'] },
+  { label:'Members',          sub:'members',          icon:'👥', roles:['RECEPTIONIST'] },
+  { label:'Approvals',        sub:'approvals',        icon:'✔️', roles:['RECEPTIONIST'] },
+  { label:'Memberships',      sub:'memberships',      icon:'💎', roles:['RECEPTIONIST'] },
+  { label:'Classes',          sub:'classes',          icon:'📅', roles:['RECEPTIONIST'] },
+  { label:'Collect Payment',  sub:'collect-payment',  icon:'💵', roles:['RECEPTIONIST'] },
+  { label:'Invoices',         sub:'invoices',         icon:'🧾', roles:['RECEPTIONIST'] },
+  { label:'Daily Report',     sub:'daily-report',     icon:'📋', roles:['RECEPTIONIST'] },
+  { label:'Complaints',       sub:'complaints',       icon:'💬', roles:['RECEPTIONIST'] },
+  { label:'Notifications',    sub:'notifications',    icon:'🔔', roles:['RECEPTIONIST'] },
+
+  // ── Trainer ───────────────────────────────────────────────────────────────
+  { label:'Dashboard',       sub:'trainer-home',     icon:'🏠', roles:['TRAINER'] },
+  { label:'My Clients',      sub:'trainer-clients',  icon:'👥', roles:['TRAINER'] },
+  { label:'PT Sessions',     sub:'pt-sessions',      icon:'🤝', roles:['TRAINER'] },
+  { label:'Workout Plans',   sub:'workout-plans',    icon:'📋', roles:['TRAINER'] },
+  { label:'Assessments',     sub:'assessments',      icon:'📝', roles:['TRAINER'] },
+  { label:'Progress',        sub:'trainer-progress', icon:'📈', roles:['TRAINER'] },
+  { label:'Classes',         sub:'classes',          icon:'📅', roles:['TRAINER'] },
+  { label:'Attendance',      sub:'attendance',       icon:'✅', roles:['TRAINER'] },
+  { label:'Messages',        sub:'messages',         icon:'💬', roles:['TRAINER'] },
+  { label:'My Workouts',     sub:'workouts',         icon:'💪', roles:['TRAINER'] },
+  { label:'Notifications',   sub:'notifications',    icon:'🔔', roles:['TRAINER'] },
+
+  // ── Member ────────────────────────────────────────────────────────────────
+  { label:'Dashboard',       sub:'member-home',      icon:'🏠', roles:['MEMBER'] },
+  { label:'My Profile',      sub:'member-profile',   icon:'👤', roles:['MEMBER'] },
+  { label:'My Membership',   sub:'my-membership',    icon:'💎', roles:['MEMBER'] },
+  { label:'My Progress',     sub:'member-progress',  icon:'📈', roles:['MEMBER'] },
+  { label:'Book Classes',    sub:'bookings',         icon:'📆', roles:['MEMBER'] },
+  { label:'Classes',         sub:'classes',          icon:'📅', roles:['MEMBER'] },
+  { label:'Workout Plans',   sub:'workout-plans',    icon:'📋', roles:['MEMBER'] },
+  { label:'Diet Plans',      sub:'ai-diet',          icon:'🥗', roles:['MEMBER'] },
+  { label:'My Workouts',     sub:'workouts',         icon:'💪', roles:['MEMBER'] },
+  { label:'My Invoices',     sub:'member-invoices',  icon:'🧾', roles:['MEMBER'] },
+  { label:'Messages',        sub:'messages',         icon:'💬', roles:['MEMBER'] },
+  { label:'Feedback',        sub:'member-feedback',  icon:'⭐', roles:['MEMBER'] },
+  { label:'Notifications',   sub:'notifications',    icon:'🔔', roles:['MEMBER'] },
+
+  // ── Super Admin ───────────────────────────────────────────────────────────
+  { label:'All Users',       sub:'sa-users',         icon:'👤', roles:['SUPER_ADMIN'] },
+  { label:'All Gyms',        sub:'sa-gyms',          icon:'🏢', roles:['SUPER_ADMIN'] },
+  { label:'Subscriptions',   sub:'sa-subscriptions', icon:'💎', roles:['SUPER_ADMIN'] },
+  { label:'Audit Log',       sub:'audit',            icon:'📋', roles:['SUPER_ADMIN'] },
+  { label:'System Settings', sub:'settings',         icon:'⚙️', roles:['SUPER_ADMIN'] },
 ];
 
 function renderSidebar() {
@@ -435,6 +470,15 @@ function showSub(sub) {
     'my-membership':'My Membership','ai-diet':'AI Diet Planner','nutrition':'Nutrition Tracker',
     'pos':'Point of Sale','activities':'Activities','reception':'Reception Dashboard',
     'workout-plans':'Workout Plans',
+    'collect-payment':'Collect Payment','visitors':'Visitor Log','daily-report':'Daily Report',
+    'trainer-clients':'My Clients','assessments':'Fitness Assessments','messages':'Messages',
+    'member-profile':'My Profile','member-progress':'My Progress','member-feedback':'Feedback',
+    'member-invoices':'My Invoices',
+    'my-gyms':'My Gyms','approvals':'Approvals','staff':'Staff','payroll':'Payroll',
+    'schedule':'Schedule','maintenance':'Maintenance','complaints':'Complaints',
+    'leads':'Leads','policies':'Policies','register-member':'Register Member',
+    'invoices':'Invoices','trainer-progress':'Progress',
+    'sa-users':'All Users','sa-gyms':'All Gyms','sa-subscriptions':'Subscriptions',
   };
   document.getElementById('dash-title').textContent = titles[sub] || 'Dashboard';
   renderSubPage(sub);
@@ -452,6 +496,7 @@ function renderDashboard() {
   if (currentUser.role === 'TRAINER') defaultSub = 'trainer-home';
   else if (currentUser.role === 'MEMBER') defaultSub = 'member-home';
   else if (currentUser.role === 'RECEPTIONIST') defaultSub = 'reception';
+  else if (currentUser.role === 'SUPER_ADMIN') defaultSub = 'sa-users';
   showSub(defaultSub);
 }
 
@@ -496,6 +541,31 @@ function renderSubPage(sub) {
     case 'activities':     renderActivities(el);      break;
     case 'reception':      renderReception(el);       break;
     case 'workout-plans':  renderWorkoutPlans(el);    break;
+    case 'collect-payment': renderCollectPayment(el); break;
+    case 'visitors':       renderVisitors(el);        break;
+    case 'daily-report':   renderDailyReport(el);     break;
+    case 'trainer-clients': renderTrainerClients(el); break;
+    case 'assessments':    renderAssessments(el);     break;
+    case 'messages':       renderMessages(el);        break;
+    case 'member-profile': renderMemberProfile(el);   break;
+    case 'member-progress': renderMemberProgress(el); break;
+    case 'member-feedback': renderMemberFeedback(el); break;
+    case 'member-invoices': renderMemberInvoices(el); break;
+    case 'my-gyms':        renderMyGyms(el);          break;
+    case 'approvals':      renderApprovals(el);       break;
+    case 'staff':          renderStaff(el);           break;
+    case 'payroll':        renderPayroll(el);         break;
+    case 'schedule':       renderSchedule(el);        break;
+    case 'maintenance':    renderMaintenance(el);     break;
+    case 'complaints':     renderComplaints(el);      break;
+    case 'leads':          renderLeads(el);           break;
+    case 'policies':       renderPolicies(el);        break;
+    case 'register-member': renderRegisterMember(el); break;
+    case 'invoices':       renderReceptionInvoices(el); break;
+    case 'trainer-progress': renderTrainerProgress(el); break;
+    case 'sa-users':       renderSuperAdminUsers(el);  break;
+    case 'sa-gyms':        renderSuperAdminGyms(el);   break;
+    case 'sa-subscriptions': renderSuperAdminSubs(el); break;
   }
 }
 
@@ -876,26 +946,83 @@ function renderNotifications(el) {
 function renderMemberHome(el) {
   el.innerHTML = `
     <div class="space-y-6">
-      <div><h2 class="text-xl font-bold text-slate-800">Welcome back, ${currentUser.firstName}! 👋</h2><p class="text-sm text-slate-500">Premium Member · GF-012</p></div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-3xl font-extrabold text-indigo-600">24</p><p class="text-xs text-slate-500 mt-1">Check-ins this month</p></div>
-        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-3xl font-extrabold text-green-500">3</p><p class="text-xs text-slate-500 mt-1">Classes booked</p></div>
-        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-3xl font-extrabold text-orange-500">18</p><p class="text-xs text-slate-500 mt-1">Days until renewal</p></div>
-      </div>
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
-        <h3 class="font-semibold text-slate-800 mb-3">My Membership</h3>
-        <div class="flex items-center justify-between">
-          <div><p class="font-bold text-indigo-600 text-lg">Premium Plan</p><p class="text-sm text-slate-500">$49/month · Renews Jun 17, 2025</p></div>
-          <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">ACTIVE</span>
+      <!-- Digital membership card -->
+      <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white shadow-lg">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-indigo-200 text-xs font-semibold uppercase tracking-widest">Digital Membership</p>
+            <h2 class="text-2xl font-bold mt-1">${currentUser.firstName} ${currentUser.lastName}</h2>
+            <p class="font-mono text-indigo-200 text-sm mt-1">GF-012</p>
+          </div>
+          <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center text-3xl">🏋️</div>
+        </div>
+        <div class="mt-5 flex items-center justify-between">
+          <div>
+            <p class="text-indigo-200 text-xs">Plan</p>
+            <p class="font-semibold">Premium Plan</p>
+          </div>
+          <div>
+            <p class="text-indigo-200 text-xs">Valid Until</p>
+            <p class="font-semibold">Jun 17, 2025</p>
+          </div>
+          <span class="bg-green-400 text-green-900 text-xs font-bold px-3 py-1 rounded-full">ACTIVE</span>
         </div>
       </div>
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
-        <h3 class="font-semibold text-slate-800 mb-3">Upcoming Classes</h3>
-        <div class="space-y-2">
+      <!-- QR code section -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 flex flex-col items-center">
+        <h3 class="text-sm font-semibold text-slate-700 mb-3">Your Check-in QR Code</h3>
+        <svg width="120" height="120" viewBox="0 0 120 120" class="text-slate-800">
+          <!-- Outer finder patterns -->
+          <rect x="5" y="5" width="34" height="34" rx="3" fill="none" stroke="currentColor" stroke-width="4"/>
+          <rect x="14" y="14" width="16" height="16" fill="currentColor"/>
+          <rect x="81" y="5" width="34" height="34" rx="3" fill="none" stroke="currentColor" stroke-width="4"/>
+          <rect x="90" y="14" width="16" height="16" fill="currentColor"/>
+          <rect x="5" y="81" width="34" height="34" rx="3" fill="none" stroke="currentColor" stroke-width="4"/>
+          <rect x="14" y="90" width="16" height="16" fill="currentColor"/>
+          <!-- Data modules (mock) -->
+          <rect x="48" y="5" width="6" height="6" fill="currentColor"/><rect x="60" y="5" width="6" height="6" fill="currentColor"/>
+          <rect x="48" y="17" width="6" height="6" fill="currentColor"/><rect x="66" y="17" width="6" height="6" fill="currentColor"/>
+          <rect x="54" y="29" width="6" height="6" fill="currentColor"/><rect x="72" y="29" width="6" height="6" fill="currentColor"/>
+          <rect x="48" y="48" width="6" height="6" fill="currentColor"/><rect x="60" y="48" width="6" height="6" fill="currentColor"/><rect x="72" y="48" width="6" height="6" fill="currentColor"/>
+          <rect x="54" y="60" width="6" height="6" fill="currentColor"/><rect x="66" y="60" width="6" height="6" fill="currentColor"/>
+          <rect x="48" y="72" width="6" height="6" fill="currentColor"/><rect x="72" y="72" width="6" height="6" fill="currentColor"/>
+          <rect x="48" y="84" width="6" height="6" fill="currentColor"/><rect x="60" y="84" width="6" height="6" fill="currentColor"/>
+          <rect x="54" y="96" width="6" height="6" fill="currentColor"/><rect x="72" y="96" width="6" height="6" fill="currentColor"/>
+          <rect x="84" y="48" width="6" height="6" fill="currentColor"/><rect x="96" y="48" width="6" height="6" fill="currentColor"/>
+          <rect x="90" y="60" width="6" height="6" fill="currentColor"/><rect x="84" y="72" width="6" height="6" fill="currentColor"/>
+          <rect x="96" y="84" width="6" height="6" fill="currentColor"/><rect x="84" y="96" width="6" height="6" fill="currentColor"/>
+        </svg>
+        <p class="text-xs text-slate-400 mt-2">Show at the front desk to check in</p>
+      </div>
+      <!-- Stats -->
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center">
+          <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-2 text-white text-lg">✅</div>
+          <p class="text-2xl font-bold text-slate-800">24</p>
+          <p class="text-xs text-slate-500 mt-0.5">Check-ins This Month</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center">
+          <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-2 text-white text-lg">📅</div>
+          <p class="text-2xl font-bold text-slate-800">3</p>
+          <p class="text-xs text-slate-500 mt-0.5">Classes Booked</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center">
+          <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-2 text-white text-lg">⏳</div>
+          <p class="text-2xl font-bold text-slate-800">18</p>
+          <p class="text-xs text-slate-500 mt-0.5">Days Remaining</p>
+        </div>
+      </div>
+      <!-- Upcoming classes -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="font-semibold text-slate-800">Upcoming Classes</h3>
+          <button onclick="showSub('classes')" class="text-xs text-indigo-600 hover:underline">View all</button>
+        </div>
+        <div class="divide-y divide-slate-50">
           ${DEMO_CLASSES.slice(0,3).map(c => `
-            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-              <div><p class="text-sm font-medium text-slate-800">${c.name}</p><p class="text-xs text-slate-500">${c.day.charAt(0)+c.day.slice(1).toLowerCase()} · ${c.time}</p></div>
-              <button onclick="showDemoToast('Booked: ${c.name}')" class="text-xs bg-indigo-500 text-white px-3 py-1.5 rounded-lg hover:bg-indigo-600">Book</button>
+            <div class="flex items-center justify-between px-5 py-3">
+              <div><p class="text-sm font-medium text-slate-800">${c.name}</p><p class="text-xs text-slate-400">${c.day.charAt(0)+c.day.slice(1).toLowerCase()} · ${c.time} · ${c.trainer}</p></div>
+              <button onclick="showDemoToast('Booked: ${c.name}')" class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-lg hover:bg-indigo-700 shrink-0">Book</button>
             </div>
           `).join('')}
         </div>
@@ -907,21 +1034,84 @@ function renderMemberHome(el) {
 // ==================== TRAINER HOME ====================
 function renderTrainerHome(el) {
   const myClasses = DEMO_CLASSES.filter(c => c.trainer.includes(currentUser.firstName));
+  const QUICK_ACTIONS = [
+    { label:'My Clients',    sub:'trainer-clients',  icon:'👥', color:'bg-blue-500' },
+    { label:'PT Sessions',   sub:'pt-sessions',      icon:'🤝', color:'bg-purple-500' },
+    { label:'Workout Plans', sub:'workout-plans',    icon:'🏋️', color:'bg-green-500' },
+    { label:'Assessments',   sub:'assessments',      icon:'📝', color:'bg-amber-500' },
+    { label:'Progress',      sub:'trainer-progress', icon:'📈', color:'bg-indigo-500' },
+    { label:'Messages',      sub:'messages',         icon:'💬', color:'bg-rose-500' },
+  ];
   el.innerHTML = `
     <div class="space-y-6">
-      <div><h2 class="text-xl font-bold text-slate-800">Welcome, ${currentUser.firstName}! 💪</h2><p class="text-sm text-slate-500">Trainer · GymFlow Main Branch</p></div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-3xl font-extrabold text-indigo-600">${myClasses.length}</p><p class="text-xs text-slate-500 mt-1">Classes this week</p></div>
-        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-3xl font-extrabold text-green-500">${myClasses.reduce((s,c)=>s+c.booked,0)}</p><p class="text-xs text-slate-500 mt-1">Members training</p></div>
-        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-3xl font-extrabold text-yellow-500">4.9</p><p class="text-xs text-slate-500 mt-1">Avg rating</p></div>
+      <!-- Welcome banner -->
+      <div class="bg-gradient-to-br from-green-600 to-teal-700 rounded-2xl p-6 text-white">
+        <h2 class="text-2xl font-bold">Welcome, ${currentUser.firstName}!</h2>
+        <p class="text-green-200 mt-1">Trainer Panel — manage your clients, sessions and programs</p>
       </div>
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
-        <h3 class="font-semibold text-slate-800 mb-3">My Classes This Week</h3>
-        ${myClasses.length ? `<div class="space-y-2">${myClasses.map(c=>`
-          <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-            <div><p class="text-sm font-medium text-slate-800">${c.name}</p><p class="text-xs text-slate-500">${c.day.charAt(0)+c.day.slice(1).toLowerCase()} · ${c.time}</p></div>
-            <span class="text-xs text-indigo-600 font-semibold">${c.booked}/${c.capacity}</span>
-          </div>`).join('')}</div>` : '<p class="text-sm text-slate-500">No classes assigned yet.</p>'}
+      <!-- Stats -->
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center">
+          <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center mx-auto mb-2 text-white text-lg">📅</div>
+          <p class="text-2xl font-bold text-slate-800">${myClasses.length}</p>
+          <p class="text-xs text-slate-500 mt-0.5">Classes This Week</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center">
+          <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-2 text-white text-lg">👥</div>
+          <p class="text-2xl font-bold text-slate-800">8</p>
+          <p class="text-xs text-slate-500 mt-0.5">Active Clients</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center">
+          <div class="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center mx-auto mb-2 text-white text-lg">🤝</div>
+          <p class="text-2xl font-bold text-slate-800">3</p>
+          <p class="text-xs text-slate-500 mt-0.5">Upcoming Sessions</p>
+        </div>
+      </div>
+      <!-- Quick actions -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+        <h3 class="font-semibold text-slate-800 mb-4">Quick Actions</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          ${QUICK_ACTIONS.map(a => `
+            <button onclick="showSub('${a.sub}')" class="flex items-center gap-3 p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors text-left">
+              <div class="w-8 h-8 ${a.color} rounded-lg flex items-center justify-center shrink-0 text-sm">${a.icon}</div>
+              <span class="text-sm font-medium text-slate-700">${a.label}</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+      <!-- Upcoming PT sessions -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="font-semibold text-slate-800">Upcoming PT Sessions</h3>
+          <button onclick="showSub('pt-sessions')" class="text-xs text-indigo-600 hover:underline">View all</button>
+        </div>
+        <div class="divide-y divide-slate-50">
+          ${[
+            { member:'Oliver Brown',    time:'Mon 10:00 AM', status:'SCHEDULED' },
+            { member:'Emma Wilson',     time:'Tue 09:00 AM', status:'SCHEDULED' },
+            { member:'Noah Taylor',     time:'Wed 11:00 AM', status:'PENDING' },
+          ].map(s => `
+            <div class="flex items-center justify-between px-5 py-3">
+              <div><p class="text-sm font-medium text-slate-800">${s.member}</p><p class="text-xs text-slate-400">${s.time}</p></div>
+              <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">${s.status}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      <!-- My classes -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-100">
+          <h3 class="font-semibold text-slate-800">Upcoming Classes</h3>
+        </div>
+        <div class="divide-y divide-slate-50">
+          ${myClasses.length
+            ? myClasses.map(c=>`
+              <div class="flex items-center justify-between px-5 py-3">
+                <div><p class="text-sm font-medium text-slate-800">${c.name}</p><p class="text-xs text-slate-400">${c.day.charAt(0)+c.day.slice(1).toLowerCase()} · ${c.time}</p></div>
+                <span class="bg-green-100 text-green-700 text-xs px-2.5 py-0.5 rounded-full">SCHEDULED</span>
+              </div>`).join('')
+            : '<p class="px-5 py-6 text-sm text-slate-400 text-center">No upcoming classes.</p>'}
+        </div>
       </div>
     </div>
   `;
@@ -1887,74 +2077,87 @@ function renderActivities(el) {
 
 // ==================== RECEPTION DASHBOARD ====================
 function renderReception(el) {
-  const occupancy = 64;
-  const color = occupancy >= 80 ? 'text-red-500' : occupancy >= 60 ? 'text-orange-500' : 'text-emerald-500';
-  const ring  = occupancy >= 80 ? 'stroke-red-500'    : occupancy >= 60 ? 'stroke-orange-500'    : 'stroke-emerald-500';
-  const circ  = 2 * Math.PI * 40;
-  const dash  = circ * (1 - occupancy / 100);
+  const current = 192, capacity = 300;
+  const occupancy = Math.round(current / capacity * 100);
+  const circ = 2 * Math.PI * 40;
+  const dash = circ * (1 - occupancy / 100);
+  const ACTIONS = [
+    { icon:'✅', label:'Check In Member',  bg:'bg-green-100',  text:'text-green-700',  action:'attendance' },
+    { icon:'🔍', label:'Search Members',   bg:'bg-blue-100',   text:'text-blue-700',   action:'members'   },
+    { icon:'📅', label:"Today's Classes",  bg:'bg-purple-100', text:'text-purple-700', action:'classes'   },
+    { icon:'📲', label:'Scan QR Code',     bg:'bg-orange-100', text:'text-orange-700', action:'attendance' },
+  ];
   el.innerHTML = `
     <div class="space-y-6">
-      <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-        <h2 class="text-lg font-semibold text-slate-800 mb-4">Current Occupancy</h2>
-        <div class="flex items-center gap-8">
+      <!-- Occupancy banner -->
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 text-white shadow-lg">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-blue-200 text-sm font-semibold uppercase tracking-wide">Current Occupancy</p>
+            <p class="text-7xl font-extrabold leading-none mt-2">${occupancy}%</p>
+            <p class="text-blue-200 mt-2 text-sm">${current} of ${capacity} members inside</p>
+          </div>
           <div class="relative w-28 h-28 shrink-0">
             <svg viewBox="0 0 100 100" class="w-full h-full -rotate-90">
-              <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" stroke-width="10"/>
-              <circle cx="50" cy="50" r="40" fill="none" class="${ring}" stroke-width="10"
+              <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="10"/>
+              <circle cx="50" cy="50" r="40" fill="none" stroke="white" stroke-width="10"
                 stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${dash.toFixed(1)}" stroke-linecap="round"/>
             </svg>
             <div class="absolute inset-0 flex flex-col items-center justify-center">
-              <span class="text-2xl font-extrabold ${color}">${occupancy}%</span>
-              <span class="text-xs text-slate-400">capacity</span>
+              <span class="text-xl font-bold">${occupancy}%</span>
+              <span class="text-xs text-blue-200">capacity</span>
             </div>
           </div>
-          <div class="flex-1 grid grid-cols-2 gap-3">
-            <div class="bg-slate-50 rounded-xl p-3 text-center"><p class="text-xl font-bold text-slate-800">192</p><p class="text-xs text-slate-500">Checked in</p></div>
-            <div class="bg-slate-50 rounded-xl p-3 text-center"><p class="text-xl font-bold text-slate-800">108</p><p class="text-xs text-slate-500">Remaining capacity</p></div>
-            <div class="bg-slate-50 rounded-xl p-3 text-center"><p class="text-xl font-bold text-slate-800">47</p><p class="text-xs text-slate-500">Check-ins today</p></div>
-            <div class="bg-slate-50 rounded-xl p-3 text-center"><p class="text-xl font-bold text-slate-800">12</p><p class="text-xs text-slate-500">Active classes</p></div>
+        </div>
+        <div class="grid grid-cols-3 gap-4 mt-4">
+          <div class="bg-white/10 rounded-xl p-3 text-center">
+            <p class="text-2xl font-bold">47</p><p class="text-xs text-blue-200">Check-ins Today</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3 text-center">
+            <p class="text-2xl font-bold">12</p><p class="text-xs text-blue-200">Active Classes</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3 text-center">
+            <p class="text-2xl font-bold">108</p><p class="text-xs text-blue-200">Available Spots</p>
           </div>
         </div>
       </div>
-      <div>
-        <h2 class="text-base font-semibold text-slate-700 mb-3">Quick Actions</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          ${[
-            { icon:'✅', label:'Check In Member',  desc:'Scan QR or search name',         action:'attendance' },
-            { icon:'🔍', label:'Search Members',    desc:'Find & view member profile',     action:'members'   },
-            { icon:'📅', label:"Today's Classes",   desc:'View class schedule',            action:'classes'   },
-            { icon:'📲', label:'Scan QR Code',      desc:'Quick entry scanner',            action:'attendance' },
-          ].map(q => `
-            <button onclick="showSub('${q.action}')"
-              class="bg-white rounded-2xl p-5 border border-slate-100 hover:border-indigo-300 hover:shadow-md transition-all text-left group">
-              <div class="text-2xl mb-2">${q.icon}</div>
-              <p class="font-semibold text-slate-800 text-sm group-hover:text-indigo-600">${q.label}</p>
-              <p class="text-xs text-slate-400 mt-0.5">${q.desc}</p>
-            </button>
-          `).join('')}
-        </div>
+      <!-- Quick Actions 2x2 grid -->
+      <div class="grid grid-cols-2 gap-4">
+        ${ACTIONS.map(a => `
+          <button onclick="showSub('${a.action}')"
+            class="bg-white rounded-2xl p-6 border border-slate-100 hover:shadow-md transition-all text-left group">
+            <div class="w-12 h-12 ${a.bg} ${a.text} rounded-xl flex items-center justify-center text-2xl mb-3">${a.icon}</div>
+            <p class="font-semibold text-slate-800 group-hover:text-indigo-600">${a.label}</p>
+          </button>
+        `).join('')}
       </div>
-      <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-base font-semibold text-slate-800">Recent Check-ins</h2>
+      <!-- Open check-in station shortcut -->
+      <button onclick="showSub('attendance')"
+        class="w-full py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:opacity-90 transition-opacity shadow">
+        Open Check-in Station →
+      </button>
+      <!-- Recent check-ins -->
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="font-semibold text-slate-800">Recent Check-ins</h3>
           <button onclick="showSub('attendance')" class="text-xs text-indigo-500 hover:underline">View all →</button>
         </div>
-        <div class="space-y-2">
+        <div class="divide-y divide-slate-50">
           ${[
-            { name:'Emma Wilson',    time:'09:42 AM', badge:'Active' },
-            { name:'James Müller',   time:'09:38 AM', badge:'Active' },
-            { name:'Sara Kowalski',  time:'09:21 AM', badge:'Active' },
-            { name:'David Chen',     time:'09:15 AM', badge:'Active' },
-            { name:'Lena Dubois',    time:'09:04 AM', badge:'Active' },
+            { name:'Emma Wilson',    time:'09:42 AM' },
+            { name:'James Müller',   time:'09:38 AM' },
+            { name:'Sara Kowalski',  time:'09:21 AM' },
+            { name:'David Chen',     time:'09:15 AM' },
+            { name:'Lena Dubois',    time:'09:04 AM' },
           ].map(c => `
-            <div class="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+            <div class="flex items-center justify-between px-5 py-3">
               <div class="flex items-center gap-3">
                 <div class="w-7 h-7 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">${c.name[0]}</div>
                 <span class="text-sm font-medium text-slate-700">${c.name}</span>
               </div>
               <div class="flex items-center gap-2">
                 <span class="text-xs text-slate-400">${c.time}</span>
-                <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">${c.badge}</span>
+                <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">Active</span>
               </div>
             </div>
           `).join('')}
@@ -2734,6 +2937,1075 @@ function showDemoToast(msg) {
   toast.innerHTML = `<span class="text-indigo-400 font-bold">Demo:</span> ${msg}`;
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
+}
+
+// ==================== COLLECT PAYMENT (Receptionist) ====================
+function renderCollectPayment(el) {
+  el.innerHTML = `
+    <div class="space-y-6 max-w-2xl">
+      <div><h2 class="text-lg font-semibold text-slate-800">Collect Payment</h2><p class="text-sm text-slate-500">Record a cash, card or bank transfer payment</p></div>
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Member</label>
+          <select class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+            <option>Oliver Brown — GF-001</option>
+            <option>Emma Wilson — GF-002</option>
+            <option>Noah Taylor — GF-003</option>
+            <option>Liam Anderson — GF-005</option>
+            <option>Sophia Thomas — GF-006</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Amount ($)</label>
+            <input type="number" value="49" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Method</label>
+            <select class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+              <option>Cash</option>
+              <option>Card</option>
+              <option>Bank Transfer</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+          <input type="text" value="Monthly Premium membership" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/>
+        </div>
+        <button onclick="showDemoToast('✅ Payment of $49 recorded for Oliver Brown. Receipt generated.')" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-xl font-semibold transition-colors">Collect Payment</button>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+        <h3 class="font-semibold text-slate-800 mb-3">Recent Payments Today</h3>
+        <div class="space-y-2">
+          ${DEMO_PAYMENTS.slice(0,4).map(p => `
+            <div class="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+              <div><p class="text-sm font-medium text-slate-800">${p.member}</p><p class="text-xs text-slate-400">${p.plan} · ${p.date}</p></div>
+              <span class="text-sm font-semibold text-slate-800">$${p.amount}</span>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ==================== VISITORS (Receptionist) ====================
+const demoVisitors = [
+  { id: 1, name: 'John Walker',    badge: 'V-001', purpose: 'Guest Pass',    host: 'Oliver Brown',   checkedIn: '08:15', checkedOut: '09:30', status: 'OUT' },
+  { id: 2, name: 'Sarah Miles',    badge: 'V-002', purpose: 'Trial Session', host: 'Front Desk',     checkedIn: '09:00', checkedOut: null,    status: 'IN' },
+  { id: 3, name: 'Tom Fletcher',   badge: 'V-003', purpose: 'Guest Pass',    host: 'Emma Wilson',    checkedIn: '10:05', checkedOut: null,    status: 'IN' },
+];
+
+function renderVisitors(el) {
+  const inside = demoVisitors.filter(v => v.status === 'IN').length;
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">Visitor Log</h2><p class="text-sm text-slate-500">Track walk-in visitors and guest passes</p></div>
+        <button onclick="showDemoToast('Visitor check-in form would open here.')" class="bg-indigo-500 hover:bg-indigo-400 text-white px-4 py-2 rounded-xl text-sm font-medium">+ Check In Visitor</button>
+      </div>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center"><p class="text-2xl font-bold text-indigo-600">${inside}</p><p class="text-xs text-slate-500 mt-1">Currently Inside</p></div>
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center"><p class="text-2xl font-bold text-slate-700">${demoVisitors.length}</p><p class="text-xs text-slate-500 mt-1">Total Today</p></div>
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 text-center"><p class="text-2xl font-bold text-green-600">${demoVisitors.filter(v=>v.status==='OUT').length}</p><p class="text-xs text-slate-500 mt-1">Checked Out</p></div>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-slate-50 border-b border-slate-100">
+              <th class="text-left px-5 py-3 text-slate-500 font-medium">Visitor</th>
+              <th class="text-left px-5 py-3 text-slate-500 font-medium">Badge</th>
+              <th class="text-left px-5 py-3 text-slate-500 font-medium">Purpose</th>
+              <th class="text-left px-5 py-3 text-slate-500 font-medium">Host</th>
+              <th class="text-left px-5 py-3 text-slate-500 font-medium">Check In</th>
+              <th class="text-left px-5 py-3 text-slate-500 font-medium">Status</th>
+              <th class="px-5 py-3"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-50">
+            ${demoVisitors.map(v => `
+              <tr class="hover:bg-slate-50">
+                <td class="px-5 py-3 font-medium text-slate-800">${v.name}</td>
+                <td class="px-5 py-3 font-mono text-xs text-slate-600">${v.badge}</td>
+                <td class="px-5 py-3 text-slate-600">${v.purpose}</td>
+                <td class="px-5 py-3 text-slate-600">${v.host}</td>
+                <td class="px-5 py-3 text-slate-600">${v.checkedIn}</td>
+                <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${v.status==='IN'?'bg-green-100 text-green-700':'bg-slate-100 text-slate-500'}">${v.status==='IN'?'Inside':'Checked Out'}</span></td>
+                <td class="px-5 py-3 text-right">${v.status==='IN'?`<button onclick="showDemoToast('${v.name} checked out at '+new Date().toLocaleTimeString())" class="text-xs text-indigo-500 font-medium">Check Out</button>`:'—'}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== DAILY REPORT (Receptionist) ====================
+function renderDailyReport(el) {
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">Daily Report</h2><p class="text-sm text-slate-500">Summary for today — ${new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</p></div>
+        <button onclick="window.print()" class="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl text-sm font-medium">🖨️ Print</button>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-2xl font-bold text-indigo-600">38</p><p class="text-xs text-slate-500 mt-1">Check-ins Today</p></div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-2xl font-bold text-green-600">$1,240</p><p class="text-xs text-slate-500 mt-1">Revenue Today</p></div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-2xl font-bold text-blue-600">3</p><p class="text-xs text-slate-500 mt-1">New Members</p></div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-2xl font-bold text-orange-500">8</p><p class="text-xs text-slate-500 mt-1">Classes Running</p></div>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+        <h3 class="font-semibold text-slate-800 mb-4">Hourly Check-ins</h3>
+        <div class="flex items-end gap-2 h-28">
+          ${[3,8,14,22,18,12,9,15,20,16,8,4].map((v,i) => `
+            <div class="flex-1 flex flex-col items-center gap-1">
+              <div class="w-full bg-indigo-400 rounded-t" style="height:${Math.round(v/22*100)}%"></div>
+              <span class="text-xs text-slate-400">${6+i}h</span>
+            </div>`).join('')}
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+        <h3 class="font-semibold text-slate-800 mb-3">Today's Payments</h3>
+        <table class="w-full text-sm">
+          <thead><tr class="border-b border-slate-100"><th class="text-left py-2 text-slate-500 font-medium">Member</th><th class="text-left py-2 text-slate-500 font-medium">Plan</th><th class="text-left py-2 text-slate-500 font-medium">Method</th><th class="text-right py-2 text-slate-500 font-medium">Amount</th></tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${DEMO_PAYMENTS.slice(0,5).map(p=>`<tr><td class="py-2 text-slate-800">${p.member}</td><td class="py-2 text-slate-500">${p.plan}</td><td class="py-2 text-slate-500">Card</td><td class="py-2 text-right font-semibold text-slate-800">$${p.amount}</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== TRAINER CLIENTS ====================
+function renderTrainerClients(el) {
+  const myClients = DEMO_MEMBERS.filter(m => m.status === 'ACTIVE').slice(0, 5);
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div><h2 class="text-lg font-semibold text-slate-800">My Clients</h2><p class="text-sm text-slate-500">${myClients.length} members assigned to you</p></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        ${myClients.map(m => `
+          <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white text-sm font-bold">${m.firstName[0]}${m.lastName[0]}</div>
+              <div><p class="font-semibold text-slate-800">${m.firstName} ${m.lastName}</p><p class="text-xs text-slate-400">${m.plan} · ${m.memberNumber}</p></div>
+            </div>
+            <p class="text-xs text-slate-500 mb-3">Goal: Weight loss & conditioning</p>
+            <div class="flex gap-2">
+              <button onclick="showDemoToast('Opening assessment for ${m.firstName}')" class="flex-1 text-xs py-1.5 rounded-lg bg-indigo-50 text-indigo-600 font-medium hover:bg-indigo-100">Assess</button>
+              <button onclick="showDemoToast('Opening progress for ${m.firstName}')" class="flex-1 text-xs py-1.5 rounded-lg bg-green-50 text-green-600 font-medium hover:bg-green-100">Progress</button>
+              <button onclick="showSub('messages')" class="flex-1 text-xs py-1.5 rounded-lg bg-slate-50 text-slate-600 font-medium hover:bg-slate-100">Message</button>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+// ==================== ASSESSMENTS (Trainer) ====================
+function renderAssessments(el) {
+  el.innerHTML = `
+    <div class="space-y-5 max-w-2xl">
+      <div><h2 class="text-lg font-semibold text-slate-800">Fitness Assessments</h2><p class="text-sm text-slate-500">Log a new fitness assessment for a client</p></div>
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Client</label>
+          <select class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+            ${DEMO_MEMBERS.filter(m=>m.status==='ACTIVE').slice(0,5).map(m=>`<option>${m.firstName} ${m.lastName} — ${m.memberNumber}</option>`).join('')}
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Fitness Level</label>
+            <select class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+              <option>Beginner</option><option>Intermediate</option><option>Advanced</option><option>Elite</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Weight (kg)</label>
+            <input type="number" placeholder="75" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Body Fat %</label>
+            <input type="number" placeholder="18" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Resting HR (bpm)</label>
+            <input type="number" placeholder="65" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Goals</label>
+          <div class="grid grid-cols-2 gap-2">
+            ${['Weight Loss','Muscle Gain','Endurance','Flexibility','Strength','General Fitness','Stress Relief','Sport Performance'].map(g=>`
+              <label class="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
+                <input type="checkbox" class="rounded border-slate-300"/> ${g}
+              </label>`).join('')}
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Notes</label>
+          <textarea rows="3" placeholder="Observations, limitations, recommended focus areas..." class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
+        </div>
+        <button onclick="showDemoToast('✅ Assessment saved successfully.')" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-xl font-semibold transition-colors">Save Assessment</button>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+        <h3 class="font-semibold text-slate-800 mb-3">Recent Assessments</h3>
+        <div class="space-y-2">
+          ${DEMO_MEMBERS.slice(0,4).map((m,i) => `
+            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+              <div><p class="text-sm font-medium text-slate-800">${m.firstName} ${m.lastName}</p><p class="text-xs text-slate-400">2025-05-${28-i} · Fitness: Intermediate</p></div>
+              <button onclick="showDemoToast('Viewing assessment for ${m.firstName}')" class="text-xs text-indigo-500 font-medium">View →</button>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ==================== MESSAGES (Trainer ↔ Member) ====================
+const demoMessages = [
+  { from: 'trainer', text: 'Great session today! Remember to stretch tonight.', time: '10:30' },
+  { from: 'member',  text: 'Thanks! My legs are on fire 😄', time: '10:45' },
+  { from: 'trainer', text: 'That means it worked! See you Thursday for the next session.', time: '10:46' },
+  { from: 'member',  text: 'Will do! Should I do any cardio tomorrow?', time: '11:00' },
+  { from: 'trainer', text: 'Yes — 20–30 min light cardio or a walk is perfect. Keep it easy.', time: '11:05' },
+];
+
+function renderMessages(el) {
+  const isTrainer = currentUser.role === 'TRAINER';
+  el.innerHTML = `
+    <div class="h-full flex flex-col gap-4" style="max-height:75vh">
+      <div><h2 class="text-lg font-semibold text-slate-800">Messages</h2><p class="text-sm text-slate-500">${isTrainer ? 'Message your clients' : 'Chat with your trainer'}</p></div>
+      <div class="flex gap-4 flex-1 min-h-0">
+        ${isTrainer ? `
+        <div class="w-48 shrink-0 bg-white rounded-2xl p-3 shadow-sm border border-slate-100 space-y-1 overflow-y-auto">
+          ${DEMO_MEMBERS.filter(m=>m.status==='ACTIVE').slice(0,5).map((m,i)=>`
+            <button onclick="showDemoToast('Chat with ${m.firstName} ${m.lastName}')" class="w-full flex items-center gap-2 p-2.5 rounded-xl text-left hover:bg-indigo-50 transition-colors ${i===0?'bg-indigo-50':''}">
+              <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs font-bold shrink-0">${m.firstName[0]}${m.lastName[0]}</div>
+              <div class="min-w-0"><p class="text-xs font-medium text-slate-800 truncate">${m.firstName}</p></div>
+            </button>`).join('')}
+        </div>` : ''}
+        <div class="flex-1 bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col overflow-hidden">
+          <div class="px-4 py-3 border-b border-slate-100 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs font-bold">${isTrainer?'OB':'JL'}</div>
+            <div><p class="text-sm font-semibold text-slate-800">${isTrainer?'Oliver Brown':'Jordan Lee'}</p><p class="text-xs text-green-500">● Online</p></div>
+          </div>
+          <div class="flex-1 overflow-y-auto p-4 space-y-3">
+            ${demoMessages.map(msg => {
+              const isMe = (isTrainer && msg.from==='trainer') || (!isTrainer && msg.from==='member');
+              return `
+              <div class="flex ${isMe?'justify-end':'justify-start'}">
+                <div class="max-w-xs px-4 py-2.5 rounded-2xl text-sm ${isMe?'bg-indigo-500 text-white rounded-br-sm':'bg-slate-100 text-slate-800 rounded-bl-sm'}">
+                  <p>${msg.text}</p>
+                  <p class="text-xs mt-1 ${isMe?'text-indigo-200':'text-slate-400'}">${msg.time}</p>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+          <div class="p-3 border-t border-slate-100 flex gap-2">
+            <input id="msg-input" type="text" placeholder="Type a message…" class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"/>
+            <button onclick="showDemoToast('Message sent!')" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-medium">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ==================== MEMBER PROFILE ====================
+function renderMemberProfile(el) {
+  el.innerHTML = `
+    <div class="space-y-5 max-w-xl">
+      <div><h2 class="text-lg font-semibold text-slate-800">My Profile</h2><p class="text-sm text-slate-500">View and update your personal information</p></div>
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xl font-bold">${currentUser.firstName[0]}${currentUser.lastName[0]}</div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-800">${currentUser.firstName} ${currentUser.lastName}</h3>
+            <p class="text-sm text-slate-500">Member · GF-012</p>
+            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium mt-1 inline-block">Premium Plan</span>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">First Name</label>
+              <input value="${currentUser.firstName}" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
+              <input value="${currentUser.lastName}" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+            <input value="${currentUser.email}" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Phone</label>
+              <input value="+44 7700 900123" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Gender</label>
+              <select class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+                <option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Date of Birth</label>
+            <input type="date" value="1992-04-15" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/>
+          </div>
+        </div>
+        <button onclick="showDemoToast('✅ Profile updated successfully.')" class="mt-5 w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-xl font-semibold transition-colors">Save Changes</button>
+      </div>
+    </div>`;
+}
+
+// ==================== MEMBER PROGRESS ====================
+const demoMeasurements = [
+  { date: '2025-05-30', weight: 82.0, bodyFat: 18.5, waist: 88 },
+  { date: '2025-05-16', weight: 83.5, bodyFat: 19.2, waist: 89.5 },
+  { date: '2025-05-01', weight: 85.0, bodyFat: 20.1, waist: 91 },
+  { date: '2025-04-15', weight: 86.5, bodyFat: 21.0, waist: 92.5 },
+];
+
+function renderMemberProgress(el) {
+  const latest = demoMeasurements[0];
+  const prev = demoMeasurements[1];
+  const wDiff = (latest.weight - prev.weight).toFixed(1);
+  const bfDiff = (latest.bodyFat - prev.bodyFat).toFixed(1);
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div><h2 class="text-lg font-semibold text-slate-800">My Progress</h2><p class="text-sm text-slate-500">Track your body measurements over time</p></div>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center">
+          <p class="text-2xl font-bold text-indigo-600">${latest.weight} kg</p>
+          <p class="text-xs text-slate-500 mt-1">Weight</p>
+          <p class="text-xs mt-1 ${parseFloat(wDiff)<0?'text-green-500':'text-red-400'} font-medium">${wDiff} vs last</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center">
+          <p class="text-2xl font-bold text-orange-500">${latest.bodyFat}%</p>
+          <p class="text-xs text-slate-500 mt-1">Body Fat</p>
+          <p class="text-xs mt-1 ${parseFloat(bfDiff)<0?'text-green-500':'text-red-400'} font-medium">${bfDiff}% vs last</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center">
+          <p class="text-2xl font-bold text-blue-500">${demoMeasurements.length}</p>
+          <p class="text-xs text-slate-500 mt-1">Entries Total</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-semibold text-slate-800">Measurement History</h3>
+          <button onclick="showDemoToast('Log measurement form would open here.')" class="text-xs bg-indigo-500 text-white px-3 py-1.5 rounded-lg hover:bg-indigo-600">+ Log</button>
+        </div>
+        <table class="w-full text-sm">
+          <thead><tr class="border-b border-slate-100"><th class="text-left py-2 text-slate-500 font-medium">Date</th><th class="text-left py-2 text-slate-500 font-medium">Weight</th><th class="text-left py-2 text-slate-500 font-medium">Body Fat</th><th class="text-left py-2 text-slate-500 font-medium">Waist</th></tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${demoMeasurements.map(m=>`<tr><td class="py-2.5 text-slate-600">${m.date}</td><td class="py-2.5 font-medium text-slate-800">${m.weight} kg</td><td class="py-2.5 text-slate-600">${m.bodyFat}%</td><td class="py-2.5 text-slate-600">${m.waist} cm</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== MEMBER FEEDBACK ====================
+function renderMemberFeedback(el) {
+  const categories = ['General','Classes','Trainer','Facilities','Staff','App / Website','Billing','Suggestion'];
+  let selectedCat = 'General';
+  let selectedRating = 4;
+  function buildFeedback() {
+    return `
+      <div class="space-y-5 max-w-xl">
+        <div><h2 class="text-lg font-semibold text-slate-800">Feedback</h2><p class="text-sm text-slate-500">Share your experience with us</p></div>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-5">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Category</label>
+            <div class="flex flex-wrap gap-2">
+              ${categories.map(c=>`<button class="px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${c===selectedCat?'bg-indigo-500 text-white border-indigo-500':'border-slate-200 text-slate-600 hover:border-indigo-400'}">${c}</button>`).join('')}
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Rating</label>
+            <div class="flex gap-2">
+              ${[1,2,3,4,5].map(r=>`<button class="w-10 h-10 rounded-full text-lg ${r<=selectedRating?'bg-yellow-400':'bg-slate-100'} hover:bg-yellow-300 transition-colors">${r<=selectedRating?'★':'☆'}</button>`).join('')}
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Your feedback</label>
+            <textarea rows="4" placeholder="Tell us what you think — what's great, what could be better…" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
+            <p class="text-xs text-slate-400 mt-1">Max 500 characters</p>
+          </div>
+          <label class="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
+            <input type="checkbox" class="rounded border-slate-300"/> Submit anonymously
+          </label>
+          <button onclick="showDemoToast('✅ Thank you for your feedback!')" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-xl font-semibold transition-colors">Submit Feedback</button>
+        </div>
+      </div>`;
+  }
+  el.innerHTML = buildFeedback();
+}
+
+// ==================== MEMBER INVOICES ====================
+function renderMemberInvoices(el) {
+  const myPayments = DEMO_PAYMENTS.filter(p => p.member.includes('Oliver') || p.member.includes('Emma')).concat(DEMO_PAYMENTS.slice(0,3));
+  const uniquePayments = DEMO_PAYMENTS.slice(0,5);
+  const total = uniquePayments.reduce((s,p)=>s+p.amount,0);
+  const statusColor = { PAID:'bg-green-100 text-green-700', PENDING:'bg-yellow-100 text-yellow-700', OVERDUE:'bg-red-100 text-red-700' };
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">My Invoices</h2><p class="text-sm text-slate-500">Your payment history</p></div>
+        <div class="text-right"><p class="text-xs text-slate-500">Total paid</p><p class="text-lg font-bold text-indigo-600">$${total}</p></div>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-slate-50 border-b border-slate-100">
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Invoice</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Plan</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Date</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Status</th>
+            <th class="text-right px-5 py-3 text-slate-500 font-medium">Amount</th>
+            <th class="px-5 py-3"></th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${uniquePayments.map(p=>`
+              <tr class="hover:bg-slate-50">
+                <td class="px-5 py-3 font-mono text-xs text-slate-600">${p.id}</td>
+                <td class="px-5 py-3 text-slate-700">${p.plan}</td>
+                <td class="px-5 py-3 text-slate-500">${p.date}</td>
+                <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${statusColor[p.status]||'bg-slate-100 text-slate-500'}">${p.status}</span></td>
+                <td class="px-5 py-3 text-right font-semibold text-slate-800">$${p.amount}</td>
+                <td class="px-5 py-3 text-right"><button onclick="showDemoToast('Printing invoice ${p.id}')" class="text-xs text-indigo-500 font-medium">🖨️ Print</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== MY GYMS (Owner) ====================
+function renderMyGyms(el) {
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">My Gyms</h2><p class="text-sm text-slate-500">Manage your gym organisations</p></div>
+        <button onclick="showDemoToast('Add Gym form would open here.')" class="bg-indigo-500 hover:bg-indigo-400 text-white px-4 py-2 rounded-xl text-sm font-medium">+ New Gym</button>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-5">
+        ${DEMO_BRANCHES.map(b => `
+          <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-2xl">🏋️</div>
+              <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">Active</span>
+            </div>
+            <h3 class="font-semibold text-slate-800">${b.name}</h3>
+            <p class="text-xs text-slate-500 mt-0.5">📍 ${b.address}, ${b.city}</p>
+            <div class="mt-3 grid grid-cols-3 text-center border-t border-slate-100 pt-3">
+              <div><p class="text-lg font-bold text-indigo-600">${b.members}</p><p class="text-xs text-slate-400">Members</p></div>
+              <div><p class="text-lg font-bold text-slate-600">${b.capacity}</p><p class="text-xs text-slate-400">Capacity</p></div>
+              <div><p class="text-lg font-bold text-green-600">${Math.round(b.members/b.capacity*100)}%</p><p class="text-xs text-slate-400">Used</p></div>
+            </div>
+            <button onclick="showDemoToast('Managing ${b.name}')" class="mt-3 w-full text-xs font-medium py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 transition-colors">Manage →</button>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+// ==================== APPROVALS (Owner + Receptionist) ====================
+const DEMO_PENDING = [
+  { id:1, member:'Charlotte Clark', plan:'Elite',   amount:89, email:'charlotte@demo.com',   joined:'2025-05-28', notes:'Referred by Emma Wilson' },
+  { id:2, member:'Ryan Peters',     plan:'Premium', amount:49, email:'ryan@demo.com',        joined:'2025-05-29', notes:'Walk-in registration' },
+  { id:3, member:'Aisha Nkosi',     plan:'Basic',   amount:29, email:'aisha@demo.com',       joined:'2025-05-30', notes:'Online sign-up' },
+  { id:4, member:'Lucas Ferreira',  plan:'Elite',   amount:89, email:'lucas@demo.com',       joined:'2025-05-30', notes:'Corporate account referral' },
+];
+function renderApprovals(el) {
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">Pending Approvals</h2><p class="text-sm text-slate-500">${DEMO_PENDING.length} memberships awaiting approval</p></div>
+      </div>
+      <div class="space-y-3">
+        ${DEMO_PENDING.map(p => `
+          <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white text-sm font-bold">${p.member.split(' ').map(n=>n[0]).join('')}</div>
+              <div>
+                <p class="font-semibold text-slate-800">${p.member}</p>
+                <p class="text-xs text-slate-500">${p.email} · Applied ${p.joined}</p>
+                <p class="text-xs text-slate-400 mt-0.5">${p.notes}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+              <div class="text-right"><p class="font-bold text-indigo-600">$${p.amount}/mo</p><p class="text-xs text-slate-400">${p.plan}</p></div>
+              <button onclick="showDemoToast('✅ ${p.member} approved!')" class="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1.5 rounded-lg font-medium">Approve</button>
+              <button onclick="showDemoToast('❌ ${p.member} rejected.')" class="bg-red-100 hover:bg-red-200 text-red-600 text-xs px-3 py-1.5 rounded-lg font-medium">Reject</button>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+// ==================== STAFF (Owner) ====================
+const DEMO_STAFF = [
+  { name:'Casey Smith',   role:'RECEPTIONIST', email:'casey@demogym.com',   branch:'Main Branch', salary:2400, status:'ACTIVE',   joined:'2024-01-10' },
+  { name:'Jordan Lee',    role:'TRAINER',      email:'jordan@demogym.com',  branch:'Main Branch', salary:3200, status:'ACTIVE',   joined:'2024-02-01' },
+  { name:'Maya Patel',    role:'TRAINER',      email:'maya@demogym.com',    branch:'Uptown',      salary:3000, status:'ACTIVE',   joined:'2024-03-15' },
+  { name:'Chris Evans',   role:'TRAINER',      email:'chris@demogym.com',   branch:'Downtown',    salary:3100, status:'ACTIVE',   joined:'2024-02-20' },
+  { name:'Sofia Ruiz',    role:'TRAINER',      email:'sofia@demogym.com',   branch:'Main Branch', salary:2900, status:'ACTIVE',   joined:'2024-04-01' },
+  { name:'Mike Johnson',  role:'RECEPTIONIST', email:'mike@demogym.com',    branch:'Downtown',    salary:2200, status:'ON_LEAVE', joined:'2024-05-01' },
+];
+function renderStaff(el) {
+  const roleColor = { TRAINER:'bg-indigo-100 text-indigo-700', RECEPTIONIST:'bg-blue-100 text-blue-700', BRANCH_MANAGER:'bg-purple-100 text-purple-700' };
+  const statusColor = { ACTIVE:'bg-green-100 text-green-700', ON_LEAVE:'bg-yellow-100 text-yellow-700' };
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">Staff</h2><p class="text-sm text-slate-500">${DEMO_STAFF.length} team members</p></div>
+        <button onclick="showDemoToast('Add Staff form would open here.')" class="bg-indigo-500 hover:bg-indigo-400 text-white px-4 py-2 rounded-xl text-sm font-medium">+ Add Staff</button>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-slate-50 border-b border-slate-100">
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Name</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Role</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Branch</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Salary</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Status</th>
+            <th class="px-5 py-3"></th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${DEMO_STAFF.map(s=>`
+              <tr class="hover:bg-slate-50">
+                <td class="px-5 py-3">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-indigo-400 flex items-center justify-center text-white text-xs font-bold">${s.name.split(' ').map(n=>n[0]).join('')}</div>
+                    <div><p class="font-medium text-slate-800">${s.name}</p><p class="text-xs text-slate-400">${s.email}</p></div>
+                  </div>
+                </td>
+                <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${roleColor[s.role]||'bg-slate-100 text-slate-500'}">${s.role.replace(/_/g,' ')}</span></td>
+                <td class="px-5 py-3 text-slate-600">${s.branch}</td>
+                <td class="px-5 py-3 font-medium text-slate-800">$${s.salary.toLocaleString()}/mo</td>
+                <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${statusColor[s.status]||'bg-slate-100 text-slate-500'}">${s.status.replace(/_/g,' ')}</span></td>
+                <td class="px-5 py-3 text-right"><button onclick="showDemoToast('Editing ${s.name}')" class="text-xs text-indigo-500 font-medium">Edit →</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== PAYROLL (Owner) ====================
+function renderPayroll(el) {
+  const total = DEMO_STAFF.reduce((s,m)=>s+m.salary,0);
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div><h2 class="text-lg font-semibold text-slate-800">Payroll</h2><p class="text-sm text-slate-500">Monthly payroll overview — June 2025</p></div>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-2xl font-bold text-indigo-600">$${total.toLocaleString()}</p><p class="text-xs text-slate-500 mt-1">Total Payroll</p></div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-2xl font-bold text-slate-700">${DEMO_STAFF.length}</p><p class="text-xs text-slate-500 mt-1">Staff Members</p></div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 text-center"><p class="text-2xl font-bold text-green-600">Pending</p><p class="text-xs text-slate-500 mt-1">Payment Status</p></div>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-slate-50 border-b border-slate-100">
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Staff</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Role</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Base Salary</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Commission</th>
+            <th class="text-right px-5 py-3 text-slate-500 font-medium">Total</th>
+            <th class="px-5 py-3"></th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${DEMO_STAFF.map(s=>{const comm=s.role==='TRAINER'?Math.round(s.salary*0.1):0;return`
+              <tr class="hover:bg-slate-50">
+                <td class="px-5 py-3 font-medium text-slate-800">${s.name}</td>
+                <td class="px-5 py-3 text-slate-500">${s.role.replace(/_/g,' ')}</td>
+                <td class="px-5 py-3 text-slate-700">$${s.salary.toLocaleString()}</td>
+                <td class="px-5 py-3 text-green-600">+$${comm}</td>
+                <td class="px-5 py-3 text-right font-bold text-slate-800">$${(s.salary+comm).toLocaleString()}</td>
+                <td class="px-5 py-3 text-right"><button onclick="showDemoToast('Payslip for ${s.name}')" class="text-xs text-indigo-500 font-medium">Payslip</button></td>
+              </tr>`;}).join('')}
+          </tbody>
+          <tfoot><tr class="bg-slate-50 border-t border-slate-200"><td colspan="4" class="px-5 py-3 font-semibold text-slate-700">Total</td><td class="px-5 py-3 text-right font-bold text-slate-900">$${DEMO_STAFF.reduce((s,m)=>s+m.salary+(m.role==='TRAINER'?Math.round(m.salary*0.1):0),0).toLocaleString()}</td><td></td></tr></tfoot>
+        </table>
+      </div>
+      <button onclick="showDemoToast('Payroll run initiated for June 2025.')" class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors">Run Payroll</button>
+    </div>`;
+}
+
+// ==================== SCHEDULE (Owner) ====================
+function renderSchedule(el) {
+  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">Staff Schedule</h2><p class="text-sm text-slate-500">Weekly schedule — w/c 26 May 2025</p></div>
+        <button onclick="showDemoToast('Schedule editor would open here.')" class="bg-indigo-500 hover:bg-indigo-400 text-white px-4 py-2 rounded-xl text-sm font-medium">Edit Schedule</button>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-x-auto">
+        <table class="w-full text-sm min-w-[600px]">
+          <thead><tr class="bg-slate-50 border-b border-slate-100">
+            <th class="text-left px-4 py-3 text-slate-500 font-medium w-32">Staff</th>
+            ${days.map(d=>`<th class="text-center px-2 py-3 text-slate-500 font-medium text-xs">${d.slice(0,3)}</th>`).join('')}
+          </tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${DEMO_STAFF.slice(0,5).map(s=>`
+              <tr class="hover:bg-slate-50">
+                <td class="px-4 py-3 font-medium text-slate-800 text-xs">${s.name.split(' ')[0]}</td>
+                ${days.map((_,i)=>{const on=Math.random()>0.25;return`<td class="px-2 py-3 text-center"><span class="${on?'bg-indigo-100 text-indigo-700':'bg-slate-100 text-slate-400'} text-xs px-1.5 py-0.5 rounded font-medium">${on?'09–17':'Off'}</span></td>`;}).join('')}
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== MAINTENANCE (Owner) ====================
+const DEMO_MAINTENANCE = [
+  { id:'MT-001', equipment:'Treadmill #4',     branch:'Main Branch', issue:'Belt slipping',         priority:'HIGH',   status:'OPEN',       reported:'2025-05-28' },
+  { id:'MT-002', equipment:'Spin Bike #12',    branch:'Downtown',    issue:'Resistance not working', priority:'MEDIUM', status:'IN_PROGRESS',reported:'2025-05-27' },
+  { id:'MT-003', equipment:'Cable Machine #2', branch:'Main Branch', issue:'Weight stack jammed',    priority:'HIGH',   status:'OPEN',       reported:'2025-05-29' },
+  { id:'MT-004', equipment:'Dumbbell Rack',    branch:'Uptown',      issue:'Rubber foot missing',    priority:'LOW',    status:'RESOLVED',   reported:'2025-05-20' },
+  { id:'MT-005', equipment:'Rowing Machine #1',branch:'Main Branch', issue:'Display not working',    priority:'MEDIUM', status:'OPEN',       reported:'2025-05-30' },
+];
+function renderMaintenance(el) {
+  const pColor={HIGH:'bg-red-100 text-red-700',MEDIUM:'bg-yellow-100 text-yellow-700',LOW:'bg-slate-100 text-slate-500'};
+  const sColor={OPEN:'bg-orange-100 text-orange-700',IN_PROGRESS:'bg-blue-100 text-blue-700',RESOLVED:'bg-green-100 text-green-700'};
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">Maintenance</h2><p class="text-sm text-slate-500">${DEMO_MAINTENANCE.filter(m=>m.status!=='RESOLVED').length} open tickets</p></div>
+        <button onclick="showDemoToast('New maintenance ticket form would open here.')" class="bg-indigo-500 hover:bg-indigo-400 text-white px-4 py-2 rounded-xl text-sm font-medium">+ New Ticket</button>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-slate-50 border-b border-slate-100">
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Ticket</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Equipment</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Issue</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Priority</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Status</th>
+            <th class="px-5 py-3"></th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${DEMO_MAINTENANCE.map(m=>`
+              <tr class="hover:bg-slate-50">
+                <td class="px-5 py-3 font-mono text-xs text-slate-500">${m.id}</td>
+                <td class="px-5 py-3"><p class="font-medium text-slate-800">${m.equipment}</p><p class="text-xs text-slate-400">${m.branch}</p></td>
+                <td class="px-5 py-3 text-slate-600">${m.issue}</td>
+                <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${pColor[m.priority]}">${m.priority}</span></td>
+                <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${sColor[m.status]}">${m.status.replace(/_/g,' ')}</span></td>
+                <td class="px-5 py-3 text-right"><button onclick="showDemoToast('Updating ticket ${m.id}')" class="text-xs text-indigo-500 font-medium">Update →</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== COMPLAINTS (Owner + Receptionist) ====================
+const DEMO_COMPLAINTS = [
+  { id:'TK-001', member:'Oliver Brown',   category:'Facilities', subject:'Shower not working in locker room',  status:'OPEN',     date:'2025-05-28', priority:'HIGH' },
+  { id:'TK-002', member:'Emma Wilson',    category:'Staff',      subject:'Trainer was late for PT session',    status:'RESOLVED', date:'2025-05-25', priority:'MEDIUM' },
+  { id:'TK-003', member:'Noah Taylor',    category:'Classes',    subject:'Class was cancelled with no notice', status:'OPEN',     date:'2025-05-29', priority:'HIGH' },
+  { id:'TK-004', member:'Liam Anderson',  category:'Billing',    subject:'Charged twice for monthly plan',     status:'IN_REVIEW',date:'2025-05-27', priority:'HIGH' },
+  { id:'TK-005', member:'Sophia Thomas',  category:'General',    subject:'Music too loud in the gym',          status:'RESOLVED', date:'2025-05-20', priority:'LOW' },
+];
+function renderComplaints(el) {
+  const sColor={OPEN:'bg-red-100 text-red-700',RESOLVED:'bg-green-100 text-green-700',IN_REVIEW:'bg-yellow-100 text-yellow-700'};
+  const pColor={HIGH:'bg-red-100 text-red-700',MEDIUM:'bg-yellow-100 text-yellow-700',LOW:'bg-slate-100 text-slate-500'};
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div><h2 class="text-lg font-semibold text-slate-800">Complaints</h2><p class="text-sm text-slate-500">${DEMO_COMPLAINTS.filter(c=>c.status!=='RESOLVED').length} open · ${DEMO_COMPLAINTS.length} total</p></div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-slate-50 border-b border-slate-100">
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Ticket</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Member</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Subject</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Category</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Priority</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Status</th>
+            <th class="px-5 py-3"></th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${DEMO_COMPLAINTS.map(c=>`
+              <tr class="hover:bg-slate-50">
+                <td class="px-5 py-3 font-mono text-xs text-slate-500">${c.id}</td>
+                <td class="px-5 py-3 font-medium text-slate-800">${c.member}</td>
+                <td class="px-5 py-3 text-slate-600 max-w-xs">${c.subject}</td>
+                <td class="px-5 py-3 text-slate-500">${c.category}</td>
+                <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${pColor[c.priority]}">${c.priority}</span></td>
+                <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${sColor[c.status]}">${c.status.replace(/_/g,' ')}</span></td>
+                <td class="px-5 py-3 text-right">${c.status!=='RESOLVED'?`<button onclick="showDemoToast('Resolving ${c.id}')" class="text-xs text-green-600 font-medium">Resolve →</button>`:'—'}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== LEADS (Owner) ====================
+const DEMO_LEADS = [
+  { name:'Alex Turner',   email:'alex.t@email.com',   phone:'+44 7900 111222', source:'Website',   interest:'Premium', status:'NEW',         date:'2025-05-30' },
+  { name:'Priya Sharma',  email:'priya.s@email.com',  phone:'+44 7900 333444', source:'Referral',  interest:'Elite',   status:'CONTACTED',   date:'2025-05-29' },
+  { name:'Ben Walsh',     email:'ben.w@email.com',    phone:'+44 7900 555666', source:'Instagram', interest:'Basic',   status:'TRIAL',       date:'2025-05-27' },
+  { name:'Chloe Dupont',  email:'chloe.d@email.com',  phone:'+44 7900 777888', source:'Walk-in',   interest:'Premium', status:'CONVERTED',   date:'2025-05-24' },
+  { name:'Marcus Reid',   email:'marcus.r@email.com', phone:'+44 7900 999000', source:'Google',    interest:'Elite',   status:'NEW',         date:'2025-05-30' },
+];
+function renderLeads(el) {
+  const sColor={NEW:'bg-blue-100 text-blue-700',CONTACTED:'bg-yellow-100 text-yellow-700',TRIAL:'bg-purple-100 text-purple-700',CONVERTED:'bg-green-100 text-green-700',LOST:'bg-red-100 text-red-700'};
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">Leads</h2><p class="text-sm text-slate-500">${DEMO_LEADS.length} prospects in pipeline</p></div>
+        <button onclick="showDemoToast('Add Lead form would open here.')" class="bg-indigo-500 hover:bg-indigo-400 text-white px-4 py-2 rounded-xl text-sm font-medium">+ Add Lead</button>
+      </div>
+      <div class="grid grid-cols-4 gap-3 mb-2">
+        ${['NEW','CONTACTED','TRIAL','CONVERTED'].map(s=>`
+          <div class="bg-white rounded-xl p-3 border border-slate-100 text-center shadow-sm">
+            <p class="text-lg font-bold text-slate-800">${DEMO_LEADS.filter(l=>l.status===s).length}</p>
+            <p class="text-xs text-slate-500">${s.charAt(0)+s.slice(1).toLowerCase()}</p>
+          </div>`).join('')}
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-slate-50 border-b border-slate-100">
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Name</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Contact</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Source</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Interest</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Status</th>
+            <th class="px-5 py-3"></th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${DEMO_LEADS.map(l=>`
+              <tr class="hover:bg-slate-50">
+                <td class="px-5 py-3 font-medium text-slate-800">${l.name}</td>
+                <td class="px-5 py-3"><p class="text-slate-600 text-xs">${l.email}</p><p class="text-slate-400 text-xs">${l.phone}</p></td>
+                <td class="px-5 py-3 text-slate-500">${l.source}</td>
+                <td class="px-5 py-3 text-slate-600">${l.interest}</td>
+                <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${sColor[l.status]}">${l.status}</span></td>
+                <td class="px-5 py-3 text-right"><button onclick="showDemoToast('Following up on ${l.name}')" class="text-xs text-indigo-500 font-medium">Follow Up →</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== POLICIES (Owner) ====================
+function renderPolicies(el) {
+  const policies = [
+    { title:'Membership Cancellation Policy', updated:'2025-04-01', content:'Members may cancel with 30 days written notice. No refunds for unused days within the notice period.' },
+    { title:'Freeze Policy',                  updated:'2025-03-15', content:'Members on Premium or Elite may freeze for up to 3 months per year. Basic plan not eligible.' },
+    { title:'Guest Policy',                   updated:'2025-02-01', content:'Premium members get 2 guest passes per month. Elite members have unlimited guest access.' },
+    { title:'Code of Conduct',                updated:'2025-01-10', content:'All members must re-rack weights, wipe equipment after use, and wear appropriate gym attire.' },
+    { title:'Refund Policy',                  updated:'2025-04-15', content:'Refunds issued within 7 days of purchase if no classes attended. Class bookings non-refundable after 24h.' },
+  ];
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">Policies</h2><p class="text-sm text-slate-500">Gym rules and member terms</p></div>
+        <button onclick="showDemoToast('Policy editor would open here.')" class="bg-indigo-500 hover:bg-indigo-400 text-white px-4 py-2 rounded-xl text-sm font-medium">+ New Policy</button>
+      </div>
+      <div class="space-y-3">
+        ${policies.map(p=>`
+          <details class="bg-white rounded-2xl border border-slate-100 shadow-sm group">
+            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer list-none">
+              <div><p class="font-semibold text-slate-800">${p.title}</p><p class="text-xs text-slate-400">Last updated: ${p.updated}</p></div>
+              <span class="text-slate-400 group-open:rotate-90 transition-transform text-lg">›</span>
+            </summary>
+            <div class="px-5 pb-5">
+              <p class="text-sm text-slate-600">${p.content}</p>
+              <button onclick="showDemoToast('Editing policy: ${p.title}')" class="mt-3 text-xs text-indigo-500 font-medium">Edit Policy →</button>
+            </div>
+          </details>`).join('')}
+      </div>
+    </div>`;
+}
+
+// ==================== REGISTER MEMBER (Receptionist) ====================
+function renderRegisterMember(el) {
+  el.innerHTML = `
+    <div class="space-y-5 max-w-2xl">
+      <div><h2 class="text-lg font-semibold text-slate-800">Register Member</h2><p class="text-sm text-slate-500">Add a new member to the gym</p></div>
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-sm font-medium text-slate-700 mb-1">First Name</label><input placeholder="John" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/></div>
+          <div><label class="block text-sm font-medium text-slate-700 mb-1">Last Name</label><input placeholder="Smith" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/></div>
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1">Email</label><input type="email" placeholder="john@email.com" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/></div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-sm font-medium text-slate-700 mb-1">Phone</label><input placeholder="+44 7700 000000" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/></div>
+          <div><label class="block text-sm font-medium text-slate-700 mb-1">Date of Birth</label><input type="date" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-sm font-medium text-slate-700 mb-1">Gender</label>
+            <select class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"><option>Male</option><option>Female</option><option>Other</option></select></div>
+          <div><label class="block text-sm font-medium text-slate-700 mb-1">Membership Plan</label>
+            <select class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+              ${DEMO_MEMBERSHIP_PLANS.map(p=>`<option>$${p.price}/mo — ${p.name}</option>`).join('')}
+            </select></div>
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1">Emergency Contact</label><input placeholder="Name and phone number" class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400"/></div>
+        <button onclick="showDemoToast('✅ Member registered successfully! Member card and welcome email sent.')" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-xl font-semibold transition-colors">Register Member</button>
+      </div>
+    </div>`;
+}
+
+// ==================== INVOICES (Receptionist) ====================
+function renderReceptionInvoices(el) {
+  const sColor={PAID:'bg-green-100 text-green-700',PENDING:'bg-yellow-100 text-yellow-700',OVERDUE:'bg-red-100 text-red-700'};
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div class="flex items-center justify-between">
+        <div><h2 class="text-lg font-semibold text-slate-800">Invoices</h2><p class="text-sm text-slate-500">All payment receipts</p></div>
+        <div class="flex gap-2">
+          <select class="border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none">
+            <option>All Status</option><option>Paid</option><option>Pending</option><option>Overdue</option>
+          </select>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-slate-50 border-b border-slate-100">
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Invoice</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Member</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Plan</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Date</th>
+            <th class="text-left px-5 py-3 text-slate-500 font-medium">Status</th>
+            <th class="text-right px-5 py-3 text-slate-500 font-medium">Amount</th>
+            <th class="px-5 py-3"></th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${DEMO_PAYMENTS.map(p=>`
+              <tr class="hover:bg-slate-50">
+                <td class="px-5 py-3 font-mono text-xs text-slate-600">${p.id}</td>
+                <td class="px-5 py-3 font-medium text-slate-800">${p.member}</td>
+                <td class="px-5 py-3 text-slate-500">${p.plan}</td>
+                <td class="px-5 py-3 text-slate-500">${p.date}</td>
+                <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-xs font-medium ${sColor[p.status]||'bg-slate-100 text-slate-500'}">${p.status}</span></td>
+                <td class="px-5 py-3 text-right font-semibold text-slate-800">$${p.amount}</td>
+                <td class="px-5 py-3 text-right"><button onclick="showDemoToast('Printing invoice ${p.id}')" class="text-xs text-indigo-500 font-medium">🖨️ Print</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== TRAINER PROGRESS ====================
+function renderTrainerProgress(el) {
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div><h2 class="text-lg font-semibold text-slate-800">Client Progress</h2><p class="text-sm text-slate-500">Track body measurements for your clients</p></div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+          <label class="block text-sm font-medium text-slate-700 mb-2">Select Client</label>
+          <select class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-400">
+            ${DEMO_MEMBERS.filter(m=>m.status==='ACTIVE').slice(0,5).map(m=>`<option>${m.firstName} ${m.lastName} — ${m.memberNumber}</option>`).join('')}
+          </select>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+          <p class="text-sm font-medium text-slate-700 mb-3">Log Measurement</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="block text-xs text-slate-500 mb-1">Weight (kg)</label><input type="number" placeholder="75" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"/></div>
+            <div><label class="block text-xs text-slate-500 mb-1">Body Fat %</label><input type="number" placeholder="18" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"/></div>
+            <div><label class="block text-xs text-slate-500 mb-1">Waist (cm)</label><input type="number" placeholder="88" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"/></div>
+            <div><label class="block text-xs text-slate-500 mb-1">Chest (cm)</label><input type="number" placeholder="102" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"/></div>
+          </div>
+          <button onclick="showDemoToast('✅ Measurement logged for Oliver Brown.')" class="mt-3 w-full bg-indigo-500 hover:bg-indigo-600 text-white py-2 rounded-xl text-sm font-semibold transition-colors">Log Measurement</button>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+        <h3 class="font-semibold text-slate-800 mb-3">Oliver Brown — Progress History</h3>
+        <table class="w-full text-sm">
+          <thead><tr class="border-b border-slate-100"><th class="text-left py-2 text-slate-500 font-medium">Date</th><th class="text-left py-2 text-slate-500 font-medium">Weight</th><th class="text-left py-2 text-slate-500 font-medium">Body Fat</th><th class="text-left py-2 text-slate-500 font-medium">Waist</th><th class="text-left py-2 text-slate-500 font-medium">Change</th></tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${demoMeasurements.map((m,i)=>`<tr><td class="py-2.5 text-slate-600">${m.date}</td><td class="py-2.5 font-medium text-slate-800">${m.weight} kg</td><td class="py-2.5 text-slate-600">${m.bodyFat}%</td><td class="py-2.5 text-slate-600">${m.waist} cm</td><td class="py-2.5 text-xs ${i<demoMeasurements.length-1?'text-green-600':''}">${i<demoMeasurements.length-1?'▲ Improving':'—'}</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ==================== SUPER ADMIN ====================
+const SA_ALL_USERS = [
+  { name:'Chris Admin',    email:'superadmin@gymflow.com', role:'SUPER_ADMIN',    gym:'GymFlow HQ',     verified:true,  joined:'2023-01-01' },
+  { name:'Alex Morgan',    email:'owner@demogym.com',      role:'GYM_OWNER',      gym:'Iron Paradise',  verified:true,  joined:'2024-01-10' },
+  { name:'Jordan Lee',     email:'trainer@demogym.com',    role:'TRAINER',        gym:'Iron Paradise',  verified:true,  joined:'2024-02-15' },
+  { name:'Casey Smith',    email:'reception@demogym.com',  role:'RECEPTIONIST',   gym:'Iron Paradise',  verified:true,  joined:'2024-03-01' },
+  { name:'Sam Davis',      email:'member@demogym.com',     role:'MEMBER',         gym:'Iron Paradise',  verified:true,  joined:'2024-05-01' },
+  { name:'Oliver Brown',   email:'oliver@demo.com',        role:'MEMBER',         gym:'Iron Paradise',  verified:true,  joined:'2024-01-15' },
+  { name:'Emma Wilson',    email:'emma@demo.com',          role:'MEMBER',         gym:'Zen Wellness',   verified:true,  joined:'2024-02-03' },
+  { name:'Noah Taylor',    email:'noah@demo.com',          role:'MEMBER',         gym:'CrossFit Central', verified:false, joined:'2024-03-20' },
+  { name:'Ava Martinez',   email:'ava@demo.com',           role:'MEMBER',         gym:'Iron Paradise',  verified:true,  joined:'2023-11-10' },
+  { name:'Liam Anderson',  email:'liam@demo.com',          role:'MEMBER',         gym:'Zen Wellness',   verified:false, joined:'2024-04-05' },
+  { name:'Maya Patel',     email:'maya@demo.com',          role:'TRAINER',        gym:'Zen Wellness',   verified:true,  joined:'2024-01-20' },
+  { name:'Derek Kim',      email:'derek@demo.com',         role:'GYM_OWNER',      gym:'CrossFit Central', verified:true, joined:'2023-12-01' },
+];
+
+const ROLE_BADGE = {
+  SUPER_ADMIN:    'bg-red-100 text-red-700',
+  GYM_OWNER:      'bg-indigo-100 text-indigo-700',
+  BRANCH_MANAGER: 'bg-purple-100 text-purple-700',
+  RECEPTIONIST:   'bg-sky-100 text-sky-700',
+  TRAINER:        'bg-amber-100 text-amber-700',
+  MEMBER:         'bg-green-100 text-green-700',
+};
+
+let saRoleFilter = 'ALL';
+let saSearch = '';
+
+function renderSuperAdminUsers(el) {
+  const ROLES = ['ALL','SUPER_ADMIN','GYM_OWNER','BRANCH_MANAGER','RECEPTIONIST','TRAINER','MEMBER'];
+  const filtered = SA_ALL_USERS.filter(u =>
+    (saRoleFilter === 'ALL' || u.role === saRoleFilter) &&
+    (saSearch === '' || u.name.toLowerCase().includes(saSearch.toLowerCase()) || u.email.toLowerCase().includes(saSearch.toLowerCase()))
+  );
+  el.innerHTML = `
+    <div class="space-y-5">
+      <!-- Header -->
+      <div class="flex items-start justify-between">
+        <div>
+          <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">👤 All Users</h2>
+          <p class="text-sm text-slate-500 mt-0.5">Manage every user across all gym tenants</p>
+        </div>
+        <span class="bg-slate-100 text-slate-600 text-sm font-semibold px-3 py-1 rounded-full">${SA_ALL_USERS.length} total</span>
+      </div>
+      <!-- Search -->
+      <div class="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-3 py-2 focus-within:border-indigo-400 transition-colors">
+        <span class="text-slate-400">🔍</span>
+        <input id="sa-search" placeholder="Search by name or email…" value="${saSearch}"
+          oninput="saSearch=this.value; renderSubPage('sa-users')"
+          class="flex-1 text-sm text-slate-700 outline-none placeholder:text-slate-400 bg-transparent"/>
+      </div>
+      <!-- Role filter tabs -->
+      <div class="flex flex-wrap gap-2">
+        ${ROLES.map(r => `
+          <button onclick="saRoleFilter='${r}'; renderSubPage('sa-users')"
+            class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition-colors ${saRoleFilter===r ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300'}">
+            ${r.replace(/_/g,' ')}
+          </button>
+        `).join('')}
+      </div>
+      <!-- Users table -->
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50 border-b border-slate-100">
+            <tr>
+              <th class="text-left px-5 py-3 font-semibold text-slate-600">User</th>
+              <th class="text-left px-5 py-3 font-semibold text-slate-600">Role</th>
+              <th class="text-left px-5 py-3 font-semibold text-slate-600 hidden sm:table-cell">Gym</th>
+              <th class="text-left px-5 py-3 font-semibold text-slate-600 hidden md:table-cell">Verified</th>
+              <th class="text-left px-5 py-3 font-semibold text-slate-600 hidden md:table-cell">Joined</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-50">
+            ${filtered.length ? filtered.map(u => `
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-5 py-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold shrink-0">
+                      ${u.name.split(' ').map(n=>n[0]).join('').slice(0,2)}
+                    </div>
+                    <div>
+                      <p class="font-medium text-slate-800">${u.name}</p>
+                      <p class="text-xs text-slate-400">${u.email}</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-5 py-3">
+                  <span class="text-xs font-semibold px-2.5 py-1 rounded-full ${ROLE_BADGE[u.role] || 'bg-slate-100 text-slate-600'}">${u.role.replace(/_/g,' ')}</span>
+                </td>
+                <td class="px-5 py-3 text-slate-600 hidden sm:table-cell">${u.gym}</td>
+                <td class="px-5 py-3 hidden md:table-cell">
+                  <span class="${u.verified ? 'text-green-600' : 'text-slate-400'} font-medium text-xs">${u.verified ? '✅ Yes' : '⏳ No'}</span>
+                </td>
+                <td class="px-5 py-3 text-slate-500 text-xs hidden md:table-cell">${u.joined}</td>
+              </tr>
+            `).join('') : `
+              <tr><td colspan="5" class="px-5 py-10 text-center text-slate-400">No users match your search.</td></tr>
+            `}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function renderSuperAdminGyms(el) {
+  const GYMS = [
+    { name:'Iron Paradise',   owner:'Alex Morgan',  members:247, branches:3, plan:'Enterprise', status:'ACTIVE',   joined:'2024-01-10' },
+    { name:'Zen Wellness',    owner:'Maria Costa',  members:183, branches:2, plan:'Pro',         status:'ACTIVE',   joined:'2024-03-15' },
+    { name:'CrossFit Central',owner:'Derek Kim',    members:312, branches:4, plan:'Enterprise', status:'ACTIVE',   joined:'2023-12-01' },
+    { name:'FitLife Studio',  owner:'Priya Nair',   members: 98, branches:1, plan:'Starter',    status:'TRIAL',    joined:'2025-05-01' },
+    { name:'Peak Performance',owner:'Tom Walsh',    members:  0, branches:1, plan:'Pro',         status:'SUSPENDED',joined:'2024-11-20' },
+  ];
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div><h2 class="text-xl font-bold text-slate-800">🏢 All Gyms</h2><p class="text-sm text-slate-500 mt-0.5">All gym tenants on the GymFlow platform</p></div>
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50 border-b border-slate-100">
+            <tr>
+              <th class="text-left px-5 py-3 font-semibold text-slate-600">Gym</th>
+              <th class="text-left px-5 py-3 font-semibold text-slate-600 hidden sm:table-cell">Owner</th>
+              <th class="text-left px-5 py-3 font-semibold text-slate-600">Members</th>
+              <th class="text-left px-5 py-3 font-semibold text-slate-600 hidden md:table-cell">Plan</th>
+              <th class="text-left px-5 py-3 font-semibold text-slate-600">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-50">
+            ${GYMS.map(g=>`
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-5 py-3 font-medium text-slate-800">${g.name}</td>
+                <td class="px-5 py-3 text-slate-600 hidden sm:table-cell">${g.owner}</td>
+                <td class="px-5 py-3 text-slate-700 font-semibold">${g.members}</td>
+                <td class="px-5 py-3 hidden md:table-cell"><span class="bg-indigo-50 text-indigo-700 text-xs font-semibold px-2.5 py-1 rounded-full">${g.plan}</span></td>
+                <td class="px-5 py-3"><span class="text-xs font-semibold px-2.5 py-1 rounded-full ${g.status==='ACTIVE'?'bg-green-100 text-green-700':g.status==='TRIAL'?'bg-amber-100 text-amber-700':'bg-red-100 text-red-700'}">${g.status}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function renderSuperAdminSubs(el) {
+  el.innerHTML = `
+    <div class="space-y-5">
+      <div><h2 class="text-xl font-bold text-slate-800">💎 Subscriptions</h2><p class="text-sm text-slate-500 mt-0.5">Platform subscription plans and MRR overview</p></div>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm text-center">
+          <p class="text-3xl font-extrabold text-indigo-600">$18,450</p>
+          <p class="text-xs text-slate-500 mt-1">Monthly Recurring Revenue</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm text-center">
+          <p class="text-3xl font-extrabold text-green-600">42</p>
+          <p class="text-xs text-slate-500 mt-1">Active Subscriptions</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm text-center">
+          <p class="text-3xl font-extrabold text-amber-600">3</p>
+          <p class="text-xs text-slate-500 mt-1">Trials Active</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-100"><h3 class="font-semibold text-slate-800">Plan Breakdown</h3></div>
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50 border-b border-slate-100"><tr>
+            <th class="text-left px-5 py-3 font-semibold text-slate-600">Plan</th>
+            <th class="text-left px-5 py-3 font-semibold text-slate-600">Price/mo</th>
+            <th class="text-left px-5 py-3 font-semibold text-slate-600">Gyms</th>
+            <th class="text-left px-5 py-3 font-semibold text-slate-600">MRR</th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-50">
+            ${[
+              {plan:'Starter',    price:'$49',  gyms:12, mrr:'$588'},
+              {plan:'Pro',        price:'$149', gyms:18, mrr:'$2,682'},
+              {plan:'Enterprise', price:'$399', gyms:9,  mrr:'$3,591'},
+            ].map(r=>`<tr class="hover:bg-slate-50"><td class="px-5 py-3 font-medium text-slate-800">${r.plan}</td><td class="px-5 py-3 text-slate-600">${r.price}</td><td class="px-5 py-3 text-slate-700 font-semibold">${r.gyms}</td><td class="px-5 py-3 text-green-600 font-semibold">${r.mrr}</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
 }
 
 // ==================== INIT ====================

@@ -42,10 +42,10 @@ server.listen(PORT, () => {
   console.log(`  🌐  Open your browser:  http://localhost:${PORT}`);
   console.log('');
   console.log('  Demo credentials:');
-  console.log('  • Owner       admin@gymflow.com     / demo1234');
-  console.log('  • Trainer     trainer@gymflow.com   / demo1234');
-  console.log('  • Member      member@gymflow.com    / demo1234');
-  console.log('  • Receptionist reception@gymflow.com / demo1234');
+  console.log('  • Owner        owner@demogym.com      / Owner@1234');
+  console.log('  • Trainer      trainer@demogym.com    / Trainer@1234');
+  console.log('  • Member       member@demogym.com     / Member@1234');
+  console.log('  • Receptionist reception@demogym.com  / Reception@1234');
   console.log('');
 });
 
